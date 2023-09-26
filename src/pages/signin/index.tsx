@@ -351,7 +351,7 @@ const SignUp = () => {
                 Doğum Tarihi
               </label>
               <input
-                className="shadow appearance-none border w-full h-full py-2 px-3 mb-4 font-mono text-black leading-tight focus:outline-none focus:shadow-outline rounded-xl"
+                className="shadow appearance-none border w-full h-full py-3 sm:py-2 px-3 mb-4 font-mono text-black leading-tight focus:outline-none focus:shadow-outline rounded-xl"
                 id="birthday"
                 type="date"
                 placeholder="Doğum Tarihi"
