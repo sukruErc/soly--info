@@ -80,7 +80,7 @@ const SignUp = () => {
     }
     try {
       // const response: any = await axios.post('http://localhost:3500/v1/users/signup', {
-      const response: any = await axios.post('http://195.85.201.62:5000/v1/users/signup', {
+      const response: any = await axios.post('http://195.85.201.62:8080/v1/users/signup', {
         email: signUpFormFields.email,
         password: signUpFormFields.password,
         name: signUpFormFields.name,
@@ -179,7 +179,7 @@ const SignUp = () => {
         return;
       }
       try {
-        const response: any = await axios.post('http://195.85.201.62:5000/v1/users/metamask-signup', {
+        const response: any = await axios.post('http://195.85.201.62:8080/v1/users/metamask-signup', {
           email: formValues.email,
           password: formValues.pass,
           wallet: wallet,
@@ -223,7 +223,7 @@ const SignUp = () => {
         picture: decodedToken.picture ? decodedToken.picture : ""
       };
 
-      const response: any = await axios.post('http://195.85.201.62:5000/v1/users/google-signup', {
+      const response: any = await axios.post('http://195.85.201.62:8080/v1/users/google-signup', {
         email: request.email,
         name: request.userName,
         picture: request.picture,
