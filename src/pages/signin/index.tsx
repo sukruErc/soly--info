@@ -91,6 +91,8 @@ const SignUp = () => {
       if (response.data) {
 
         localStorage.setItem("SOLY_USER_ID", response.data.token);
+        localStorage.setItem("SOLY_USER_NAME", signUpFormFields.name);
+        localStorage.setItem("SOLY_ENTERED", 'true');
         window.location.href = "/";
       }
 
@@ -189,8 +191,9 @@ const SignUp = () => {
           role: "CUSTOMER"
         });
         if (response.data) {
-          console.log(response)
-          localStorage.setItem("SOLY_USER_ID", response.data.token);
+          localStorage.setItem("SOLY_USER_ID", response.data.token);          
+        localStorage.setItem("SOLY_USER_NAME", formValues?.name);
+          localStorage.setItem("SOLY_ENTERED", 'true');
           window.location.href = "/";
         }
 
@@ -231,8 +234,9 @@ const SignUp = () => {
         role: "CUSTOMER"
       });
       if (response.data) {
-        console.log(response)
         localStorage.setItem("SOLY_USER_ID", response.data.token);
+        localStorage.setItem("SOLY_USER_NAME", decodedToken.name);
+        localStorage.setItem("SOLY_ENTERED", 'true');
         window.location.href = "/";
       }
     } catch (error: any) {
@@ -377,32 +381,6 @@ const SignUp = () => {
             <h5 className="text-center justify-between pt-2 text-md text-white font-mono font-semibold">
               veya
             </h5>
-            {/* <div className="flex justify-center items-center">
-
-              <div className="mb-4 pt-2 grid  grid-flow-col gap-4  grid-cols-2  justify-between ">
-                <GoogleLogin
-                  onSuccess={(credentialResponse) => {
-                    if (credentialResponse.credential) {
-                      handleGoogle(credentialResponse.credential);
-                    }
-                  }}
-                  onError={() => {
-                    console.log("Login Failed");
-                  }}
-                  shape={"circle"}
-                  text={"signin"}
-                />
-                <div className="w-2/4 sm:w-1/4 h-full items-center bg-white rounded-xl row-end-2 row-span-1">
-                  <IconButton>
-                    <img
-                      src="https://th.bing.com/th/id/OIP.ssqWbRUTpo45aWTW7NfbFgHaG8?pid=ImgDet&rs=1"
-                      className="w-full h-auto "
-                      onClick={metamaskSignup}
-                    />
-                  </IconButton>
-                </div>
-              </div>
-            </div> */}
             <div className="flex justify-center items-center ">
               <div className="grid grid-cols-2">
                 <div className="col-span-1 flex justify-center items-center p-4">
