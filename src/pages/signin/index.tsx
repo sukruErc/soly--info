@@ -127,11 +127,11 @@ const SignUp = () => {
           // setWalletAddress(accounts[0]);
         } catch (error) {
           console.log(error);
-          console.log("Error connecting...");
+          console.log("Bağlantı Hatası...");
         }
       }
     } else {
-      alert("Meta Mask not detected");
+      alert("Tarayıcıda Metamask Bulunmuyor");
     }
   };
 
@@ -139,11 +139,11 @@ const SignUp = () => {
     const { value: formValues } = await Swal.fire({
       title: 'Hesap Bilgileri',
       html:
-        '<input id="metaName" class="swal2-input" placeholder="İsim">' +
-        '<input id="metaEmail" type="email" class="swal2-input" placeholder="Email">' +
-        '<input id="metaPass" type="password" class="swal2-input" placeholder="Parola">' +
-        '<input id="metaPassAgain" type="password" class="swal2-input" placeholder="Tekrar Parola">' +
-        '<input id="metaDate" class="swal2-input" type="date" placeholder="Doğum Tarihi">',
+        '<input id="metaName" class="swal2-input custom-input" placeholder="İsim">' +
+        '<input id="metaEmail" type="email" class="swal2-input custom-input" placeholder="Email">' +
+        '<input id="metaPass" type="password" class="swal2-input custom-input" placeholder="Parola">' +
+        '<input id="metaPassAgain" type="password" class="swal2-input custom-input" placeholder="Tekrar Parola">' +
+        '<input id="metaDate" class="swal2-input custom-input" type="date" placeholder="Doğum Tarihi">',
       focusConfirm: false,
       preConfirm: () => {
         return {
@@ -155,14 +155,15 @@ const SignUp = () => {
         };
       },
     });
-    if (formValues.name !== "" &&
-      formValues.email !== "" &&
-      formValues.pass !== "" &&
-      formValues.againPass !== "" &&
-      formValues.date !== "" &&
+    
+    if (formValues?.name !== "" &&
+      formValues?.email !== "" &&
+      formValues?.pass !== "" &&
+      formValues?.againPass !== "" &&
+      formValues?.date !== "" &&
       wallet !== ""
     ) {
-      if (formValues.pass !== formValues.againPass) {
+      if (formValues?.pass !== formValues?.againPass) {
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
@@ -170,7 +171,7 @@ const SignUp = () => {
         })
         return;
       }
-      if (!isPasswordValid(formValues.pass)) {
+      if (!isPasswordValid(formValues?.pass)) {
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
@@ -180,11 +181,11 @@ const SignUp = () => {
       }
       try {
         const response: any = await axios.post('http://195.85.201.62:8080/v1/users/metamask-signup', {
-          email: formValues.email,
-          password: formValues.pass,
+          email: formValues?.email,
+          password: formValues?.pass,
           wallet: wallet,
-          name: formValues.name,
-          birthday: formValues.date + "T21:51:55.624Z",
+          name: formValues?.name,
+          birthday: formValues?.date + "T21:51:55.624Z",
           role: "CUSTOMER"
         });
         if (response.data) {
@@ -259,6 +260,40 @@ const SignUp = () => {
                 className="block text-lg text-white font-bold mb-2"
                 htmlFor="username"
               >
+                Ad Soyad
+              </label>
+              <input
+                className="shadow appearance-none border w-full py-2 px-3 font-mono text-black leading-tight focus:outline-none focus:shadow-outline rounded-xl"
+                id="name"
+                type="text"
+                placeholder="Ahmet Yılmaz"
+                value={signUpFormFields.name}
+                onChange={(e) => handleChange(e)}
+              />
+            </div>
+            <div className="mb-2">
+              <label
+                className="block text-lg text-white font-bold font-mono mb-2"
+                htmlFor="birthday"
+              >
+                Doğum Tarihi
+              </label>
+              <input
+                className="shadow appearance-none border w-full h-full py-2 sm:py-2 px-3 font-mono text-black leading-tight focus:outline-none focus:shadow-outline rounded-xl"
+                id="birthday"
+                type="date"
+                placeholder="Doğum Tarihi"
+                value={signUpFormFields.birthday}
+                onChange={(e) => {
+                  handleChange(e);
+                }}
+              />
+            </div>
+            <div className="mb-2 ">
+              <label
+                className="block text-lg text-white font-bold mb-2"
+                htmlFor="username"
+              >
                 EMail
               </label>
               <input
@@ -271,22 +306,7 @@ const SignUp = () => {
                 onChange={(e) => handleChange(e)}
               />
             </div>
-            <div className="mb-2">
-              <label
-                className="block text-lg text-white font-bold mb-2"
-                htmlFor="username"
-              >
-                Ad Soyad
-              </label>
-              <input
-                className="shadow appearance-none border w-full py-2 px-3 font-mono text-black leading-tight focus:outline-none focus:shadow-outline rounded-xl"
-                id="name"
-                type="text"
-                placeholder="Ahmet Yılmaz"
-                value={signUpFormFields.name}
-                onChange={(e) => handleChange(e)}
-              />
-            </div>
+          
 
             <div className="mb-2">
               <label
@@ -321,7 +341,7 @@ const SignUp = () => {
               />
             </div>
             {/* <div className="flex items-center columns-1 sm:justify-between gap-2 mb-4 "> */}
-            <div className="mb-2">
+            <div className="mb-4">
               <label
                 className="block text-lg text-white font-mono font-bold mb-2"
                 htmlFor="phone"
@@ -343,24 +363,7 @@ const SignUp = () => {
                 }}
               />
             </div>
-            <div className="mb-4">
-              <label
-                className="block text-lg text-white font-bold font-mono mb-2"
-                htmlFor="birthday"
-              >
-                Doğum Tarihi
-              </label>
-              <input
-                className="shadow appearance-none border w-full h-full py-3 sm:py-2 px-3 mb-4 font-mono text-black leading-tight focus:outline-none focus:shadow-outline rounded-xl"
-                id="birthday"
-                type="date"
-                placeholder="Doğum Tarihi"
-                value={signUpFormFields.birthday}
-                onChange={(e) => {
-                  handleChange(e);
-                }}
-              />
-            </div>
+           
             {/* </div> */}
             <div className="flex items-center justify-between">
               <button

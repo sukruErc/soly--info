@@ -3,3 +3,24 @@
   background-size: cover;
   /* height: 100%; */
 }
+
+/* Custom font family for SweetAlert 2 */
+.custom-sweetalert-container {
+  font-family: 'Neue Plak', sans-serif;
+}
+
+.custom-sweetalert-title {
+  font-family: 'Neue Plak', sans-serif;
+}
+
+.custom-sweetalert-popup {
+  font-family: 'Neue Plak', sans-serif;
+}
+
+.custom-sweetalert-content {
+  font-family: 'Neue Plak', sans-serif;
+}
+
+.custom-input {
+  font-family: 'Neue Plak', sans-serif  !important;;
+}
