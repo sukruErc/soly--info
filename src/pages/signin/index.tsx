@@ -118,7 +118,6 @@ const SignUp = () => {
   const metamaskSignup = async () => {
 
     if (window.ethereum) {
-      // debugger
       const web3Instance = new Web3(window.ethereum);
       if (web3Instance) {
 

@@ -1,0 +1,28 @@
+.logoImg {
+  background-image: url("../../public/img/29_desktop.jpg");
+  background-size: cover;
+  background-size: 100% 100%;
+  height: 100vh;
+
+}
+
+.styledinput {
+  width:300px;
+  padding: 10px;
+  margin-top: 20px;
+  border: 2px solid #ff0000;
+  /* Red border */
+  background-color: #ffffff;
+  /* White background */
+  color: #ff0000;
+  /* Red text color */
+  font-size: 16px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+@media (max-width: 768px) {
+  .logoImg {
+    background-image: url("../../public/img/29_mobile.jpg"); 
+  }
+}
