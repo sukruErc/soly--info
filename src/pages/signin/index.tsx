@@ -11,8 +11,12 @@ import axios from 'axios';
 import Swal from "sweetalert2";
 import { GoogleLogin } from "@react-oauth/google";
 import jwt_decode from "jwt-decode";
+import { useRouter } from "next/router";
 
 const SignUp = () => {
+  const router = useRouter();
+  const { nameForNFT } = router.query;
+
   const [signUpFormFields, setSignUpFormFields] = useState({
     email: "",
     password: "",
