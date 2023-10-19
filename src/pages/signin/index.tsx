@@ -83,23 +83,66 @@ const SignUp = () => {
       return;
     }
     try {
-      // const response: any = await axios.post('http://localhost:3500/v1/users/signup', {
-      const response: any = await axios.post('http://195.85.201.62:8080/v1/users/signup', {
-        email: signUpFormFields.email,
-        password: signUpFormFields.password,
-        name: signUpFormFields.name,
-        phone: signUpFormFields.phone,
-        birthday: signUpFormFields.birthday + "T21:51:55.624Z",
-        role: "CUSTOMER"
-      });
-      if (response.data) {
+      if (nameForNFT && nameForNFT !== "") {
+        let timerInterval: any
+        Swal.fire({
+          title: 'Auto close alert!',
+          html: 'I will close in <b></b> milliseconds.',
+          timer: 2000,
+          timerProgressBar: true,
+          didOpen: () => {
+            Swal.showLoading()
+            const b = Swal.getHtmlContainer().querySelector('b')
+            timerInterval = setInterval(() => {
+              b.textContent = Swal.getTimerLeft()
+            }, 100)
+          },
+          willClose: () => {
+            clearInterval(timerInterval)
+          }
+        }).then((result) => {
+          /* Read more about handling dismissals below */
+          if (result.dismiss === Swal.DismissReason.timer) {
+            console.log('I was closed by the timer')
+          }
+        })
+        // const response: any = await axios.post('http://localhost:3500/v1/users/signup', {
+        // // const response: any = await axios.post('http://195.85.201.62:8080/v1/users/signup', {
+        //   email: signUpFormFields.email,
+        //   password: signUpFormFields.password,
+        //   name: signUpFormFields.name,
+        //   phone: signUpFormFields.phone,
+        //   birthday: signUpFormFields.birthday + "T21:51:55.624Z",
+        //   role: "CUSTOMER",
+        //   nameForNFT: nameForNFT
+        // });
+        // if (response.data) {
 
-        localStorage.setItem("SOLY_USER_ID", response.data.token);
-        localStorage.setItem("SOLY_USER_NAME", signUpFormFields.name);
-        localStorage.setItem("SOLY_ENTERED", 'true');
-        window.location.href = "/";
+        //   localStorage.setItem("SOLY_USER_ID", response.data.token);
+        //   localStorage.setItem("SOLY_USER_NAME", signUpFormFields.name);
+        //   localStorage.setItem("SOLY_ENTERED", 'true');
+        //   window.location.href = "/";
+        // }
       }
+      else {
+        // const response: any = await axios.post('http://localhost:3500/v1/users/signup', {
+        const response: any = await axios.post('http://195.85.201.62:8080/v1/users/signup', {
+          email: signUpFormFields.email,
+          password: signUpFormFields.password,
+          name: signUpFormFields.name,
+          phone: signUpFormFields.phone,
+          birthday: signUpFormFields.birthday + "T21:51:55.624Z",
+          role: "CUSTOMER",
+        });
+        if (response.data) {
 
+          localStorage.setItem("SOLY_USER_ID", response.data.token);
+          localStorage.setItem("SOLY_USER_NAME", signUpFormFields.name);
+          localStorage.setItem("SOLY_ENTERED", 'true');
+          window.location.href = "/";
+        }
+
+      }
     } catch (error) {
       Swal.fire({
         icon: 'error',
@@ -160,7 +203,7 @@ const SignUp = () => {
         };
       },
     });
-    
+
     if (formValues?.name !== "" &&
       formValues?.email !== "" &&
       formValues?.pass !== "" &&
@@ -194,8 +237,8 @@ const SignUp = () => {
           role: "CUSTOMER"
         });
         if (response.data) {
-          localStorage.setItem("SOLY_USER_ID", response.data.token);          
-        localStorage.setItem("SOLY_USER_NAME", formValues?.name);
+          localStorage.setItem("SOLY_USER_ID", response.data.token);
+          localStorage.setItem("SOLY_USER_NAME", formValues?.name);
           localStorage.setItem("SOLY_ENTERED", 'true');
           window.location.href = "/";
         }
@@ -313,7 +356,7 @@ const SignUp = () => {
                 onChange={(e) => handleChange(e)}
               />
             </div>
-          
+
 
             <div className="mb-2">
               <label
@@ -370,7 +413,7 @@ const SignUp = () => {
                 }}
               />
             </div>
-           
+
             {/* </div> */}
             <div className="flex items-center justify-between">
               <button

@@ -2,6 +2,9 @@ import Head from "next/head";
 import Script from "next/script";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import MemoryPage from "@/component/memoryPage";
+
 
 
 export default function Home() {
@@ -18,7 +21,7 @@ export default function Home() {
     setMounted(true);
     const isSignupAlertShown = localStorage.getItem("SOLY_ENTERED");
 
-    if(isSignupAlertShown === "true"){
+    if (isSignupAlertShown === "true") {
       const Toast = Swal.mixin({
         toast: true,
         position: 'top-end',
@@ -31,7 +34,7 @@ export default function Home() {
           toast.style.marginTop = '100px';
         }
       })
-      
+
       Toast.fire({
         icon: 'success',
         title: `Hoşgeldin ${localStorage.getItem("SOLY_USER_NAME")}! Üye olduğun için teşekkürler. Yakın zamanda güncellemelerimizi alacaksın`
@@ -39,6 +42,9 @@ export default function Home() {
       localStorage.setItem("SOLY_ENTERED", 'false');
     }
   }, []);
+
+  const [showModal, setShowModal] = useState(false);
+
   return (
     <>
       <Head>
@@ -60,17 +66,17 @@ export default function Home() {
       <div className="back-to-top" />
       <header>
         <nav
-          className="navbar navbar-expand-lg navbar-light bg-white sticky"
+          className="navbar navbar-expand-lg navbar-light bg-white"
           data-offset={500}
         >
           <div className="container">
-            <div style={{ display: "grid", gridTemplateColumns: "5fr 1fr",alignItems: "center", justifyContent: "center" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "5fr 1fr", alignItems: "center", justifyContent: "center" }}>
               <a href="#" className="navbar-brand">
                 <img alt="logo" width={"30%"} src="img/soly_logo_trans.png" />
               </a>
               {userId === "" ? (
                 <div
-                style={{ height: "35px", display: "flex", alignItems: "center", justifyContent: "center" }}
+                  style={{ height: "35px", display: "flex", alignItems: "center", justifyContent: "center" }}
                 >
                   <a className="btn btn-primary3" href="signin" >
                     Üye Ol
@@ -82,13 +88,32 @@ export default function Home() {
             </div>
           </div>
         </nav>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100vw",
+            padding: "20px",
+          }}
+        >
+          <button
+            className="bg-red-500 w-full hover:bg-blue-700 text-white font-mono font-bold py-3 px-4 rounded-xl focus:outline-none focus:shadow-outline"
+            type="button"
+            onClick={() => setShowModal(true)}
+
+          >
+            29 Ekim Hatıra Biletinizi Alın!
+          </button>
+
+        </div>
         <div className="container">
           <div className="page-banner home-banner">
             <div className="row align-items-center flex-wrap-reverse h-100">
               <div
-                className={`col-md-6 py-5 ${
-                  mounted ? "wow fadeInLeft animated" : ""
-                }`}
+                className={`col-md-6 py-5 ${mounted ? "wow fadeInLeft animated" : ""
+                  }`}
               >
                 <h1 className="mb-4">NFT, Bilet ile Buluşuyor!</h1>
                 <p className="text-lg text-grey mb-5">
@@ -97,9 +122,8 @@ export default function Home() {
                 </p>
               </div>
               <div
-                className={`col-md-6 py-0 ${
-                  mounted ? "wow fadeInLeft animated" : ""
-                }`}
+                className={`col-md-6 py-0 ${mounted ? "wow fadeInLeft animated" : ""
+                  }`}
               >
                 <img
                   alt="banner-png"
@@ -112,9 +136,8 @@ export default function Home() {
                 />
               </div>
               <div
-                className={`col-md-6 py-5  ${
-                  mounted ? "wow zoomIn animated" : ""
-                }`}
+                className={`col-md-6 py-5  ${mounted ? "wow zoomIn animated" : ""
+                  }`}
               >
                 <div className="img-fluid text-center"></div>
               </div>
@@ -141,9 +164,8 @@ export default function Home() {
           <div className="row">
             <div className="col-lg-4">
               <div
-                className={`card-service ${
-                  mounted ? "wow fadeInUp animated" : ""
-                }`}
+                className={`card-service ${mounted ? "wow fadeInUp animated" : ""
+                  }`}
               >
                 <div className="header2">
                   <img src="img/services/service-1.svg" alt="" />
@@ -160,9 +182,8 @@ export default function Home() {
             </div>
             <div className="col-lg-4">
               <div
-                className={`card-service ${
-                  mounted ? "wow fadeInUp animated" : ""
-                }`}
+                className={`card-service ${mounted ? "wow fadeInUp animated" : ""
+                  }`}
               >
                 <div className="header2">
                   <img src="img/services/service-2.svg" alt="" />
@@ -179,9 +200,8 @@ export default function Home() {
             </div>
             <div className="col-lg-4">
               <div
-                className={`card-service ${
-                  mounted ? "wow fadeInUp animated" : ""
-                }`}
+                className={`card-service ${mounted ? "wow fadeInUp animated" : ""
+                  }`}
               >
                 <div className="header2">
                   <img src="img/services/service-3.svg" alt="" />
@@ -204,9 +224,8 @@ export default function Home() {
         <div className="container">
           <div className="row align-items-center">
             <div
-              className={`col-lg-6 py-3 ${
-                mounted ? "wow fadeInUp animated" : ""
-              }`}
+              className={`col-lg-6 py-3 ${mounted ? "wow fadeInUp animated" : ""
+                }`}
             >
               <h2 className="title-section">Soly Dijital Koleksiyon</h2>
               <div className="divider" />
@@ -228,9 +247,8 @@ export default function Home() {
               </p>
             </div>
             <div
-              className={`col-lg-6 py-3 ${
-                mounted ? "wow fadeInUp animated" : ""
-              }`}
+              className={`col-lg-6 py-3 ${mounted ? "wow fadeInUp animated" : ""
+                }`}
             >
               <div className="img-fluid py-3 text-center">
                 <img src="img/about-part.jpg" alt="" />
@@ -253,9 +271,8 @@ export default function Home() {
           <div className="row">
             <div className="col-lg-4">
               <div
-                className={`card-service ${
-                  mounted ? "wow fadeInUp animated" : ""
-                }`}
+                className={`card-service ${mounted ? "wow fadeInUp animated" : ""
+                  }`}
               >
                 <div className="header2">
                   <img src="img/services/service-4.svg" alt="" />
@@ -272,9 +289,8 @@ export default function Home() {
             </div>
             <div className="col-lg-4">
               <div
-                className={`card-service ${
-                  mounted ? "wow fadeInUp animated" : ""
-                }`}
+                className={`card-service ${mounted ? "wow fadeInUp animated" : ""
+                  }`}
               >
                 <div className="header2">
                   <img src="img/services/service-5.svg" alt="" />
@@ -289,9 +305,8 @@ export default function Home() {
             </div>
             <div className="col-lg-4">
               <div
-                className={`card-service ${
-                  mounted ? "wow fadeInUp animated" : ""
-                }`}
+                className={`card-service ${mounted ? "wow fadeInUp animated" : ""
+                  }`}
               >
                 <div className="header2">
                   <img src="img/services/service-6.svg" alt="" />
@@ -319,9 +334,8 @@ export default function Home() {
         >
           <div className="container text-center">
             <div
-              className={`row justify-content-center ${
-                mounted ? "wow fadeInUp animated" : ""
-              }`}
+              className={`row justify-content-center ${mounted ? "wow fadeInUp animated" : ""
+                }`}
             >
               <div className="col-lg-8">
                 <h2 className="mb-4">Bizimle İletişime Geçin</h2>
@@ -372,9 +386,8 @@ export default function Home() {
       >
         <div className="container">
           <div
-            className={`row justify-content-center ${
-              mounted ? "wow fadeInUp animated" : ""
-            }`}
+            className={`row justify-content-center ${mounted ? "wow fadeInUp animated" : ""
+              }`}
           >
             <div className="col-lg-8 justify-content-center">
               <h3>Sosyal Medya Hesaplarımız</h3>
@@ -403,6 +416,29 @@ export default function Home() {
           </div>
         </div>
       </footer>
+      {showModal ? (
+        <>
+          <div className=" flex justify-center items-center bg-red-200 bg-opacity-50 fixed inset-0 z-50 outline-none focus:outline-none">
+            <div className="relative w-10/12 h-10/12  ">
+              <div className="border-0 rounded-lg shadow-lg relative flex flex-col  bg-white outline-none focus:outline-none">
+                <div className="flex items-start justify-end border-b border-solid border-gray-300 rounded-t p-1 ">
+                  {/* <h3 className="text-3xl font=semibold">General Info</h3> */}
+                  <button
+                    className="bg-transparent border-0 text-black float-right"
+                    onClick={() => setShowModal(false)}
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+
+                  </button>
+                </div>
+                <MemoryPage />
+              </div>
+            </div>
+          </div>
+        </>
+      ) : null}
       {/* <script async src="js/jquery-3.5.1.min.js"></script>
       <script async src="js/bootstrap.bundle.min.js"></script>
       <script async src="vendor/wow/wow.min.js"></script>
