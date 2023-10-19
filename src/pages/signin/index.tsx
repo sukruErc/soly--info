@@ -7,7 +7,7 @@ import Web3 from "web3";
 import { withLogin } from "../../hoc/loginCheckHOC";
 import styles from "@/styles/Signin.module.css";
 import { MetamaskModal } from "@/component/metamaskModal";
-import axios from 'axios';
+import axios from "axios";
 import Swal from "sweetalert2";
 import { GoogleLogin } from "@react-oauth/google";
 import jwt_decode from "jwt-decode";
@@ -32,8 +32,6 @@ const SignUp = () => {
       [event.target.id]: event.target.value,
     });
   };
-
-
 
   const adjustPhone = (value: string) => {
     if (!value) return value;
@@ -60,52 +58,85 @@ const SignUp = () => {
       signUpFormFields.phone === ""
     ) {
       Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Eksik Alanları Doldurunuz!',
-      })
+        icon: "error",
+        title: "Oops...",
+        text: "Eksik Alanları Doldurunuz!",
+      });
       return;
     }
     if (signUpFormFields.password !== signUpFormFields.confirmPassword) {
       Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Parola eşleşmiyor!',
-      })
+        icon: "error",
+        title: "Oops...",
+        text: "Parola eşleşmiyor!",
+      });
       return;
     }
     if (!isPasswordValid(signUpFormFields.password)) {
       Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Parola en az bir büyük harf, en az bir rakam ve minimum 8 karakter içermelidir!',
-      })
+        icon: "error",
+        title: "Oops...",
+        text: "Parola en az bir büyük harf, en az bir rakam ve minimum 8 karakter içermelidir!",
+      });
       return;
     }
     try {
       if (nameForNFT && nameForNFT !== "") {
-        let timerInterval: any
+        let timerInterval:any;
         Swal.fire({
-          title: 'Auto close alert!',
-          html: 'I will close in <b></b> milliseconds.',
-          timer: 2000,
+          title: 'Processing Request',
+          html: 'Please wait... <b></b> seconds.',
           timerProgressBar: true,
           didOpen: () => {
-            Swal.showLoading()
-            const b = Swal.getHtmlContainer().querySelector('b')
-            timerInterval = setInterval(() => {
-              b.textContent = Swal.getTimerLeft()
-            }, 100)
-          },
+            Swal.showLoading();
+            const b = Swal.getHtmlContainer()?.querySelector('b');
+            if (b) {
+
+              timerInterval = setInterval(() => {
+                const timerLeft = Swal.getTimerLeft();
+                if (typeof timerLeft === 'number') {
+                  b.textContent = timerLeft.toString();
+                }
+              }, 1000);
+            }
+            },
           willClose: () => {
-            clearInterval(timerInterval)
+            clearInterval(timerInterval);
           }
-        }).then((result) => {
-          /* Read more about handling dismissals below */
-          if (result.dismiss === Swal.DismissReason.timer) {
-            console.log('I was closed by the timer')
-          }
+        });
+        
+        fetch('http://localhost:3500/v1/users/signup', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json', // Set the Content-Type to JSON
+          },
+          body: JSON.stringify({
+            email: signUpFormFields.email,
+            password: signUpFormFields.password,
+            name: signUpFormFields.name,
+            phone: signUpFormFields.phone,
+            birthday: signUpFormFields.birthday + "T21:51:55.624Z",
+            role: "CUSTOMER",
+            nameForNFT: nameForNFT
+          })
         })
+          .then((response) => {
+            // Handle the response when the request is complete
+            // Close the timer popup
+            Swal.close();
+            // Handle the response data, e.g., display it in a notification or update the UI
+            return response.json();
+          })
+          .then((data) => {
+            // Handle the response data
+            console.log(data);
+          })
+          .catch((error) => {
+            // Handle errors, e.g., display an error message
+            console.error('Error:', error);
+          });
+        
+        
         // const response: any = await axios.post('http://localhost:3500/v1/users/signup', {
         // // const response: any = await axios.post('http://195.85.201.62:8080/v1/users/signup', {
         //   email: signUpFormFields.email,
@@ -123,32 +154,32 @@ const SignUp = () => {
         //   localStorage.setItem("SOLY_ENTERED", 'true');
         //   window.location.href = "/";
         // }
-      }
-      else {
+      } else {
         // const response: any = await axios.post('http://localhost:3500/v1/users/signup', {
-        const response: any = await axios.post('http://195.85.201.62:8080/v1/users/signup', {
-          email: signUpFormFields.email,
-          password: signUpFormFields.password,
-          name: signUpFormFields.name,
-          phone: signUpFormFields.phone,
-          birthday: signUpFormFields.birthday + "T21:51:55.624Z",
-          role: "CUSTOMER",
-        });
+        const response: any = await axios.post(
+          "http://195.85.201.62:8080/v1/users/signup",
+          {
+            email: signUpFormFields.email,
+            password: signUpFormFields.password,
+            name: signUpFormFields.name,
+            phone: signUpFormFields.phone,
+            birthday: signUpFormFields.birthday + "T21:51:55.624Z",
+            role: "CUSTOMER",
+          }
+        );
         if (response.data) {
-
           localStorage.setItem("SOLY_USER_ID", response.data.token);
           localStorage.setItem("SOLY_USER_NAME", signUpFormFields.name);
-          localStorage.setItem("SOLY_ENTERED", 'true');
+          localStorage.setItem("SOLY_ENTERED", "true");
           window.location.href = "/";
         }
-
       }
     } catch (error) {
       Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
+        icon: "error",
+        title: "Oops...",
         text: error as any,
-      })
+      });
       console.log(error);
       //sweetalert
     }
@@ -160,18 +191,15 @@ const SignUp = () => {
     return passwordPattern.test(password);
   }
 
-
-
   const metamaskSignup = async () => {
-
     if (window.ethereum) {
       const web3Instance = new Web3(window.ethereum);
       if (web3Instance) {
-
         try {
-
-          const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-          openFormModal(accounts[0])
+          const accounts = await window.ethereum.request({
+            method: "eth_requestAccounts",
+          });
+          openFormModal(accounts[0]);
           // setWalletAddress(accounts[0]);
         } catch (error) {
           console.log(error);
@@ -185,7 +213,7 @@ const SignUp = () => {
 
   const openFormModal = async (wallet: string) => {
     const { value: formValues } = await Swal.fire({
-      title: 'Hesap Bilgileri',
+      title: "Hesap Bilgileri",
       html:
         '<input id="metaName" class="swal2-input custom-input" placeholder="İsim">' +
         '<input id="metaEmail" type="email" class="swal2-input custom-input" placeholder="Email">' +
@@ -195,16 +223,20 @@ const SignUp = () => {
       focusConfirm: false,
       preConfirm: () => {
         return {
-          name: (document.getElementById('metaName') as HTMLInputElement).value,
-          email: (document.getElementById('metaEmail') as HTMLInputElement).value,
-          pass: (document.getElementById('metaPass') as HTMLInputElement).value,
-          againPass: (document.getElementById('metaPassAgain') as HTMLInputElement).value,
-          date: (document.getElementById('metaDate') as HTMLInputElement).value,
+          name: (document.getElementById("metaName") as HTMLInputElement).value,
+          email: (document.getElementById("metaEmail") as HTMLInputElement)
+            .value,
+          pass: (document.getElementById("metaPass") as HTMLInputElement).value,
+          againPass: (
+            document.getElementById("metaPassAgain") as HTMLInputElement
+          ).value,
+          date: (document.getElementById("metaDate") as HTMLInputElement).value,
         };
       },
     });
 
-    if (formValues?.name !== "" &&
+    if (
+      formValues?.name !== "" &&
       formValues?.email !== "" &&
       formValues?.pass !== "" &&
       formValues?.againPass !== "" &&
@@ -213,56 +245,56 @@ const SignUp = () => {
     ) {
       if (formValues?.pass !== formValues?.againPass) {
         Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'Parola eşleşmiyor!',
-        })
+          icon: "error",
+          title: "Oops...",
+          text: "Parola eşleşmiyor!",
+        });
         return;
       }
       if (!isPasswordValid(formValues?.pass)) {
         Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'Parola en az bir büyük harf, en az bir rakam ve minimum 8 karakter içermelidir!',
-        })
+          icon: "error",
+          title: "Oops...",
+          text: "Parola en az bir büyük harf, en az bir rakam ve minimum 8 karakter içermelidir!",
+        });
         return;
       }
       try {
-        const response: any = await axios.post('http://195.85.201.62:8080/v1/users/metamask-signup', {
-          email: formValues?.email,
-          password: formValues?.pass,
-          wallet: wallet,
-          name: formValues?.name,
-          birthday: formValues?.date + "T21:51:55.624Z",
-          role: "CUSTOMER"
-        });
+        const response: any = await axios.post(
+          "http://195.85.201.62:8080/v1/users/metamask-signup",
+          {
+            email: formValues?.email,
+            password: formValues?.pass,
+            wallet: wallet,
+            name: formValues?.name,
+            birthday: formValues?.date + "T21:51:55.624Z",
+            role: "CUSTOMER",
+          }
+        );
         if (response.data) {
           localStorage.setItem("SOLY_USER_ID", response.data.token);
           localStorage.setItem("SOLY_USER_NAME", formValues?.name);
-          localStorage.setItem("SOLY_ENTERED", 'true');
+          localStorage.setItem("SOLY_ENTERED", "true");
           window.location.href = "/";
         }
-
       } catch (error) {
         Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
+          icon: "error",
+          title: "Oops...",
           text: error as any,
-        })
+        });
         console.log(error);
         //sweetalert
       }
-    }
-    else {
+    } else {
       Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Eksik Alanları Doldurunuz!',
-      })
+        icon: "error",
+        title: "Oops...",
+        text: "Eksik Alanları Doldurunuz!",
+      });
       return;
     }
   };
-
 
   const handleGoogle = async (credential: any) => {
     try {
@@ -270,26 +302,28 @@ const SignUp = () => {
       const request = {
         userName: decodedToken.name ? decodedToken.name : "",
         email: decodedToken.email ? decodedToken.email : "",
-        picture: decodedToken.picture ? decodedToken.picture : ""
+        picture: decodedToken.picture ? decodedToken.picture : "",
       };
 
-      const response: any = await axios.post('http://195.85.201.62:8080/v1/users/google-signup', {
-        email: request.email,
-        name: request.userName,
-        picture: request.picture,
-        role: "CUSTOMER"
-      });
+      const response: any = await axios.post(
+        "http://195.85.201.62:8080/v1/users/google-signup",
+        {
+          email: request.email,
+          name: request.userName,
+          picture: request.picture,
+          role: "CUSTOMER",
+        }
+      );
       if (response.data) {
         localStorage.setItem("SOLY_USER_ID", response.data.token);
         localStorage.setItem("SOLY_USER_NAME", decodedToken.name);
-        localStorage.setItem("SOLY_ENTERED", 'true');
+        localStorage.setItem("SOLY_ENTERED", "true");
         window.location.href = "/";
       }
     } catch (error: any) {
       console.log(error);
     }
   };
-
 
   return (
     <div className={styles.logoImg}>
@@ -356,7 +390,6 @@ const SignUp = () => {
                 onChange={(e) => handleChange(e)}
               />
             </div>
-
 
             <div className="mb-2">
               <label
@@ -446,7 +479,6 @@ const SignUp = () => {
 
                 <div className="col-span-1 flex justify-center items-center p-4">
                   <div className="w-2/4 sm:w-2/6 h-full items-center bg-white rounded-xl row-end-2 row-span-1">
-
                     <IconButton>
                       <img
                         src="https://th.bing.com/th/id/OIP.ssqWbRUTpo45aWTW7NfbFgHaG8?pid=ImgDet&rs=1"

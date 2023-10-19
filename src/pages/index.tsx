@@ -94,12 +94,13 @@ export default function Home() {
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
-            width: "100vw",
+            width: "50vw",
             padding: "20px",
+            marginLeft: "10px"
           }}
         >
           <button
-            className="bg-red-500 w-full hover:bg-blue-700 text-white font-mono font-bold py-3 px-4 rounded-xl focus:outline-none focus:shadow-outline"
+            className="bg-red-500  hover:bg-blue-700 text-white font-mono font-bold py-3 px-4 rounded-xl focus:outline-none focus:shadow-outline"
             type="button"
             onClick={() => setShowModal(true)}
 
@@ -418,8 +419,8 @@ export default function Home() {
       </footer>
       {showModal ? (
         <>
-          <div className=" flex justify-center items-center bg-red-200 bg-opacity-50 fixed inset-0 z-50 outline-none focus:outline-none">
-            <div className="relative w-10/12 h-10/12  ">
+          <div className=" flex justify-center items-center bg-gray-100 bg-opacity-50 fixed inset-0 z-50 outline-none focus:outline-none">
+            <div className="relative w-4/6 h-4/6  ">
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col  bg-white outline-none focus:outline-none">
                 <div className="flex items-start justify-end border-b border-solid border-gray-300 rounded-t p-1 ">
                   {/* <h3 className="text-3xl font=semibold">General Info</h3> */}
