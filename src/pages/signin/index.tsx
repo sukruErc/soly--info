@@ -82,10 +82,10 @@ const SignUp = () => {
     }
     try {
       if (nameForNFT && nameForNFT !== "") {
-        let timerInterval:any;
+        let timerInterval: any;
         Swal.fire({
-          title: 'Processing Request',
-          html: 'Please wait... <b></b> seconds.',
+          title: 'Size Özel Hatıra Bileti üretiliyor',
+          html: 'Lütfen Bekleyiniz',
           timerProgressBar: true,
           didOpen: () => {
             Swal.showLoading();
@@ -99,12 +99,14 @@ const SignUp = () => {
                 }
               }, 1000);
             }
-            },
+          },
           willClose: () => {
             clearInterval(timerInterval);
-          }
+          },
+          // backdrop: false,
+          allowOutsideClick: false
         });
-        
+
         fetch('http://localhost:3500/v1/users/signup', {
           method: 'POST',
           headers: {
@@ -121,51 +123,43 @@ const SignUp = () => {
           })
         })
           .then((response) => {
-            // Handle the response when the request is complete
-            // Close the timer popup
+
             Swal.close();
-            // Handle the response data, e.g., display it in a notification or update the UI
+
             return response.json();
           })
           .then((data) => {
-            // Handle the response data
-            console.log(data);
+            if (data.token) {
+
+              localStorage.setItem("SOLY_USER_ID", data.token);
+              localStorage.setItem("SOLY_USER_NAME", signUpFormFields.name);
+              localStorage.setItem("SOLY_ENTERED", 'true');
+              window.location.href = "/";
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: data.message,
+              });
+            }
           })
           .catch((error) => {
-            // Handle errors, e.g., display an error message
+
             console.error('Error:', error);
           });
-        
-        
-        // const response: any = await axios.post('http://localhost:3500/v1/users/signup', {
-        // // const response: any = await axios.post('http://195.85.201.62:8080/v1/users/signup', {
-        //   email: signUpFormFields.email,
-        //   password: signUpFormFields.password,
-        //   name: signUpFormFields.name,
-        //   phone: signUpFormFields.phone,
-        //   birthday: signUpFormFields.birthday + "T21:51:55.624Z",
-        //   role: "CUSTOMER",
-        //   nameForNFT: nameForNFT
-        // });
-        // if (response.data) {
 
-        //   localStorage.setItem("SOLY_USER_ID", response.data.token);
-        //   localStorage.setItem("SOLY_USER_NAME", signUpFormFields.name);
-        //   localStorage.setItem("SOLY_ENTERED", 'true');
-        //   window.location.href = "/";
-        // }
       } else {
-        // const response: any = await axios.post('http://localhost:3500/v1/users/signup', {
-        const response: any = await axios.post(
-          "http://195.85.201.62:8080/v1/users/signup",
-          {
-            email: signUpFormFields.email,
-            password: signUpFormFields.password,
-            name: signUpFormFields.name,
-            phone: signUpFormFields.phone,
-            birthday: signUpFormFields.birthday + "T21:51:55.624Z",
-            role: "CUSTOMER",
-          }
+        const response: any = await axios.post('http://localhost:3500/v1/users/signup', {
+          // const response: any = await axios.post(
+          //   "http://195.85.201.62:8080/v1/users/signup",
+          //   {
+          email: signUpFormFields.email,
+          password: signUpFormFields.password,
+          name: signUpFormFields.name,
+          phone: signUpFormFields.phone,
+          birthday: signUpFormFields.birthday + "T21:51:55.624Z",
+          role: "CUSTOMER",
+        }
         );
         if (response.data) {
           localStorage.setItem("SOLY_USER_ID", response.data.token);
@@ -174,11 +168,12 @@ const SignUp = () => {
           window.location.href = "/";
         }
       }
-    } catch (error) {
+    } catch (error: any) {
+
       Swal.fire({
         icon: "error",
         title: "Oops...",
-        text: error as any,
+        text: error.response.data.message as any,
       });
       console.log(error);
       //sweetalert
@@ -260,28 +255,98 @@ const SignUp = () => {
         return;
       }
       try {
-        const response: any = await axios.post(
-          "http://195.85.201.62:8080/v1/users/metamask-signup",
-          {
-            email: formValues?.email,
-            password: formValues?.pass,
-            wallet: wallet,
-            name: formValues?.name,
-            birthday: formValues?.date + "T21:51:55.624Z",
-            role: "CUSTOMER",
+        if (nameForNFT && nameForNFT !== "") {
+          let timerInterval: any;
+          Swal.fire({
+            title: 'Size Özel Hatıra Bileti üretiliyor',
+            html: 'Lütfen Bekleyiniz',
+            timerProgressBar: true,
+            didOpen: () => {
+              Swal.showLoading();
+              const b = Swal.getHtmlContainer()?.querySelector('b');
+              if (b) {
+
+                timerInterval = setInterval(() => {
+                  const timerLeft = Swal.getTimerLeft();
+                  if (typeof timerLeft === 'number') {
+                    b.textContent = timerLeft.toString();
+                  }
+                }, 1000);
+              }
+            },
+            willClose: () => {
+              clearInterval(timerInterval);
+            },
+            // backdrop: false,
+            allowOutsideClick: false
+          });
+
+          fetch('http://localhost:3500/v1/users/metamask-signup', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json', // Set the Content-Type to JSON
+            },
+            body: JSON.stringify({
+              email: formValues?.email,
+              password: formValues?.pass,
+              wallet: wallet,
+              name: formValues?.name,
+              birthday: formValues?.date + "T21:51:55.624Z",
+              role: "CUSTOMER",
+              nameForNFT: nameForNFT
+            })
+          })
+            .then((response) => {
+
+              Swal.close();
+
+              return response.json();
+            })
+            .then((data) => {
+              if (data.token) {
+
+                localStorage.setItem("SOLY_USER_ID", data.token);
+                localStorage.setItem("SOLY_USER_NAME", formValues?.name);
+                localStorage.setItem("SOLY_ENTERED", 'true');
+                window.location.href = "/";
+              } else {
+                Swal.fire({
+                  icon: "error",
+                  title: "Oops...",
+                  text: data.message,
+                });
+              }
+            })
+            .catch((error) => {
+
+              console.error('Error:', error);
+            });
+
+        } else {
+          const response: any = await axios.post(
+            "http://195.85.201.62:8080/v1/users/metamask-signup",
+            {
+              email: formValues?.email,
+              password: formValues?.pass,
+              wallet: wallet,
+              name: formValues?.name,
+              birthday: formValues?.date + "T21:51:55.624Z",
+              role: "CUSTOMER",
+            }
+          );
+          if (response.data) {
+            localStorage.setItem("SOLY_USER_ID", response.data.token);
+            localStorage.setItem("SOLY_USER_NAME", formValues?.name);
+            localStorage.setItem("SOLY_ENTERED", "true");
+            window.location.href = "/";
           }
-        );
-        if (response.data) {
-          localStorage.setItem("SOLY_USER_ID", response.data.token);
-          localStorage.setItem("SOLY_USER_NAME", formValues?.name);
-          localStorage.setItem("SOLY_ENTERED", "true");
-          window.location.href = "/";
         }
-      } catch (error) {
+      } catch (error: any) {
+
         Swal.fire({
           icon: "error",
           title: "Oops...",
-          text: error as any,
+          text: error.response.data.message as any,
         });
         console.log(error);
         //sweetalert
@@ -304,24 +369,98 @@ const SignUp = () => {
         email: decodedToken.email ? decodedToken.email : "",
         picture: decodedToken.picture ? decodedToken.picture : "",
       };
+      if (nameForNFT && nameForNFT !== "") {
+        let timerInterval: any;
+        Swal.fire({
+          title: 'Size Özel Hatıra Bileti üretiliyor',
+          html: 'Lütfen Bekleyiniz',
+          timerProgressBar: true,
+          didOpen: () => {
+            Swal.showLoading();
+            const b = Swal.getHtmlContainer()?.querySelector('b');
+            if (b) {
 
-      const response: any = await axios.post(
-        "http://195.85.201.62:8080/v1/users/google-signup",
-        {
-          email: request.email,
-          name: request.userName,
-          picture: request.picture,
-          role: "CUSTOMER",
+              timerInterval = setInterval(() => {
+                const timerLeft = Swal.getTimerLeft();
+                if (typeof timerLeft === 'number') {
+                  b.textContent = timerLeft.toString();
+                }
+              }, 1000);
+            }
+          },
+          willClose: () => {
+            clearInterval(timerInterval);
+          },
+          // backdrop: false,
+          allowOutsideClick: false
+        });
+
+        fetch('http://localhost:3500/v1/users/google-signup', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: request.email,
+            name: request.userName,
+            picture: request.picture,
+            role: "CUSTOMER",
+            nameForNFT: nameForNFT
+          })
+        })
+          .then((response) => {
+
+            Swal.close();
+
+            return response.json();
+          })
+          .then((data) => {
+            if (data.token) {
+
+              localStorage.setItem("SOLY_USER_ID", data.token);
+              localStorage.setItem("SOLY_USER_NAME", decodedToken.name);
+              localStorage.setItem("SOLY_ENTERED", 'true');
+              window.location.href = "/";
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: data.message,
+              });
+            }
+          })
+          .catch((error) => {
+
+            console.error('Error:', error);
+          });
+
+      } else {
+
+        const response: any = await axios.post(
+          "http://195.85.201.62:8080/v1/users/google-signup",
+          {
+            email: request.email,
+            name: request.userName,
+            picture: request.picture,
+            role: "CUSTOMER",
+          }
+        );
+        if (response.data) {
+          localStorage.setItem("SOLY_USER_ID", response.data.token);
+          localStorage.setItem("SOLY_USER_NAME", decodedToken.name);
+          localStorage.setItem("SOLY_ENTERED", "true");
+          window.location.href = "/";
         }
-      );
-      if (response.data) {
-        localStorage.setItem("SOLY_USER_ID", response.data.token);
-        localStorage.setItem("SOLY_USER_NAME", decodedToken.name);
-        localStorage.setItem("SOLY_ENTERED", "true");
-        window.location.href = "/";
       }
     } catch (error: any) {
+
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: error.response.data.message as any,
+      });
       console.log(error);
+      //sweetalert
     }
   };
 

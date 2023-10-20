@@ -1,12 +1,26 @@
 import styles from "@/styles/Test.module.css";
 import axios from "axios";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 // import myImage from '../../public/img/29_memory.png';
-const MemoryPage = () => {
+
+interface MemoryPageProps {
+
+}
+
+const MemoryPage = (props: MemoryPageProps) => {
   const router = useRouter();
   const [nameForNFT, setNameForNFT] = useState("");
+
+  const [userId, setUserId] = useState<string>("");
+  const [userName, setUserName] = useState<string | null>(null);
+
+  useEffect(() => {
+    const storedUserId = localStorage.getItem("SOLY_USER_ID");
+    setUserName(localStorage.getItem("SOLY_USER_NAME"))
+    setUserId(storedUserId ? storedUserId : "");
+  }, []);
 
   const downloadImage = async () => {
     if (nameForNFT !== "") {
@@ -24,41 +38,115 @@ const MemoryPage = () => {
         link.download = "29_ekim_hatira_bileti.png"; // Set the desired filename
         link.click();
       }
-    }else{
-        Swal.fire({
-            icon: "error",
-            title: "",
-            text: "Lütfen İsim Giriniz!",
-          });
-    }
-  };
-
-  const handleSignUpPopUp = () => {
-    if (nameForNFT !== "") {
+    } else {
       Swal.fire({
-        title: "Ücretsiz NFT için üye olun!",
-        // text: 'Click a button below',
-        showCancelButton: true,
-        confirmButtonText: "Üye Ol",
-        cancelButtonText: "İptal",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          router.push(`signin?nameForNFT=${nameForNFT}`);
-        }
+        icon: "error",
+        title: "",
+        text: "Lütfen İsim Giriniz!",
       });
-    }else{
-        Swal.fire({
-            icon: "error",
-            title: "",
-            text: "Lütfen İsim Giriniz!",
-          });
     }
   };
 
-  
+  const handleSignUpPopUp = async () => {
+    if (nameForNFT !== "") {
+      if (userId !== "") {
+        const res = await axios.post(
+          "http://localhost:3500/v1/memory-ticket/generate-memory-ticket",
+          {
+            displayName: nameForNFT,
+            activityName: "ttestt",
+            userId: userId
+          }
+        );
+        let timerInterval: any;
+        Swal.fire({
+          title: 'Size Özel Hatıra Bileti üretiliyor',
+          html: 'Lütfen Bekleyiniz',
+          timerProgressBar: true,
+          didOpen: () => {
+            Swal.showLoading();
+            const b = Swal.getHtmlContainer()?.querySelector('b');
+            if (b) {
+
+              timerInterval = setInterval(() => {
+                const timerLeft = Swal.getTimerLeft();
+                if (typeof timerLeft === 'number') {
+                  b.textContent = timerLeft.toString();
+                }
+              }, 1000);
+            }
+          },
+          willClose: () => {
+            clearInterval(timerInterval);
+          },
+          // backdrop: false,
+          allowOutsideClick: false
+        });
+
+        fetch('http://localhost:3500/v1/memory-ticket/generate-memory-ticket', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            displayName: nameForNFT,
+            activityName: "ttestt",
+            userId: userId
+          })
+        })
+          .then((response) => {
+
+            Swal.close();
+
+            return response.json();
+          })
+          .then((data) => {
+            // if (data) {
+
+            //   localStorage.setItem("SOLY_USER_ID", data.token);
+            //   localStorage.setItem("SOLY_USER_NAME", signUpFormFields.name);
+            //   localStorage.setItem("SOLY_ENTERED", 'true');
+            //   window.location.href = "/";
+            // } else {
+            //   Swal.fire({
+            //     icon: "error",
+            //     title: "Oops...",
+            //     text: data.message,
+            //   });
+            // }
+            console.log(data)
+          })
+          .catch((error) => {
+
+            console.error('Error:', error);
+          });
+      }
+      else {
+        Swal.fire({
+          title: "Ücretsiz NFT için üye olun!",
+          // text: 'Click a button below',
+          showCancelButton: true,
+          confirmButtonText: "Üye Ol",
+          cancelButtonText: "İptal",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            router.push(`signin?nameForNFT=${nameForNFT}`);
+          }
+        });
+      }
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "",
+        text: "Lütfen İsim Giriniz!",
+      });
+    }
+  };
+
+
 
   return (
-    
+
     <div className={styles.logoImg}>
       <div
         style={{
