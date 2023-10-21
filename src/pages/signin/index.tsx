@@ -129,12 +129,23 @@ const SignUp = () => {
             return response.json();
           })
           .then((data) => {
-            if (data.token) {
+            if (data) {
 
-              localStorage.setItem("SOLY_USER_ID", data.token);
+              localStorage.setItem("SOLY_USER_ID", data.userId);
               localStorage.setItem("SOLY_USER_NAME", signUpFormFields.name);
               localStorage.setItem("SOLY_ENTERED", 'true');
-              window.location.href = "/";
+              Swal.fire({
+                icon: "success",
+                title: "Tebrikler!",
+                text: "Hatıra Biletinizi Aldınız!",
+                confirmButtonText: 'Anasayfaya Gidin',
+
+                
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  window.location.href = "/";
+                }
+              });;
             } else {
               Swal.fire({
                 icon: "error",
@@ -162,7 +173,7 @@ const SignUp = () => {
         }
         );
         if (response.data) {
-          localStorage.setItem("SOLY_USER_ID", response.data.token);
+          localStorage.setItem("SOLY_USER_ID", response.data.userId);
           localStorage.setItem("SOLY_USER_NAME", signUpFormFields.name);
           localStorage.setItem("SOLY_ENTERED", "true");
           window.location.href = "/";
@@ -303,9 +314,9 @@ const SignUp = () => {
               return response.json();
             })
             .then((data) => {
-              if (data.token) {
+              if (data) {
 
-                localStorage.setItem("SOLY_USER_ID", data.token);
+                localStorage.setItem("SOLY_USER_ID", data.userId);
                 localStorage.setItem("SOLY_USER_NAME", formValues?.name);
                 localStorage.setItem("SOLY_ENTERED", 'true');
                 window.location.href = "/";
@@ -324,7 +335,8 @@ const SignUp = () => {
 
         } else {
           const response: any = await axios.post(
-            "http://195.85.201.62:8080/v1/users/metamask-signup",
+            // "http://195.85.201.62:8080/v1/users/metamask-signup",
+"http://localhost:3500/v1/users/metamask-signup",
             {
               email: formValues?.email,
               password: formValues?.pass,
@@ -335,7 +347,7 @@ const SignUp = () => {
             }
           );
           if (response.data) {
-            localStorage.setItem("SOLY_USER_ID", response.data.token);
+            localStorage.setItem("SOLY_USER_ID", response.data.userId);
             localStorage.setItem("SOLY_USER_NAME", formValues?.name);
             localStorage.setItem("SOLY_ENTERED", "true");
             window.location.href = "/";
@@ -415,9 +427,9 @@ const SignUp = () => {
             return response.json();
           })
           .then((data) => {
-            if (data.token) {
+            if (data) {
 
-              localStorage.setItem("SOLY_USER_ID", data.token);
+              localStorage.setItem("SOLY_USER_ID", data.userId);
               localStorage.setItem("SOLY_USER_NAME", decodedToken.name);
               localStorage.setItem("SOLY_ENTERED", 'true');
               window.location.href = "/";
@@ -446,7 +458,7 @@ const SignUp = () => {
           }
         );
         if (response.data) {
-          localStorage.setItem("SOLY_USER_ID", response.data.token);
+          localStorage.setItem("SOLY_USER_ID", response.data.userId);
           localStorage.setItem("SOLY_USER_NAME", decodedToken.name);
           localStorage.setItem("SOLY_ENTERED", "true");
           window.location.href = "/";

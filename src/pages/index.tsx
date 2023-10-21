@@ -2,48 +2,108 @@ import Head from "next/head";
 import Script from "next/script";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
 import MemoryPage from "@/component/memoryPage";
-
-
+import axios from "axios";
+import { useRouter } from "next/router";
+import MemoryShow from "@/component/memoryShow";
 
 export default function Home() {
   const [userId, setUserId] = useState<string>("");
-  const [userRole, setUserRole] = useState<string | null>(null);
+  const [ipfsImage, setIpfsImage] = useState<string>("");
   const [userName, setUserName] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
-  const [isCollapsed, setIsCollapsed] = useState(true);
+  const [getNFT, setGetNFT] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [hasMemory, setHasMemory] = useState(false);
+  const [bcAddress, setBcAdrress] = useState("")
+  const [mnemonicIsShown, setMnemonicIsShown] = useState(false)
+
+  const router = useRouter();
+  const { hatiraBileti } = router.query;
 
   useEffect(() => {
+    if (hatiraBileti) {
+      setShowModal(true);
+    }
     const storedUserId = localStorage.getItem("SOLY_USER_ID");
-    setUserName(localStorage.getItem("SOLY_USER_NAME"))
+    setUserName(localStorage.getItem("SOLY_USER_NAME"));
     setUserId(storedUserId ? storedUserId : "");
     setMounted(true);
     const isSignupAlertShown = localStorage.getItem("SOLY_ENTERED");
+    CheckDb(storedUserId);
 
     if (isSignupAlertShown === "true") {
       const Toast = Swal.mixin({
         toast: true,
-        position: 'top-end',
+        position: "top-end",
         showConfirmButton: false,
         timer: 3000,
         timerProgressBar: true,
         didOpen: (toast) => {
-          toast.addEventListener('mouseenter', Swal.stopTimer)
-          toast.addEventListener('mouseleave', Swal.resumeTimer)
-          toast.style.marginTop = '100px';
-        }
-      })
+          toast.addEventListener("mouseenter", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+          toast.style.marginTop = "100px";
+        },
+      });
 
       Toast.fire({
-        icon: 'success',
-        title: `Hoşgeldin ${localStorage.getItem("SOLY_USER_NAME")}! Üye olduğun için teşekkürler. Yakın zamanda güncellemelerimizi alacaksın`
-      })
-      localStorage.setItem("SOLY_ENTERED", 'false');
+        icon: "success",
+        title: `Hoşgeldin ${localStorage.getItem(
+          "SOLY_USER_NAME"
+        )}! Üye olduğun için teşekkürler. Yakın zamanda güncellemelerimizi alacaksın`,
+      });
+      localStorage.setItem("SOLY_ENTERED", "false");
     }
   }, []);
 
-  const [showModal, setShowModal] = useState(false);
+  useEffect(() => {
+    if (getNFT) {
+      setShowModal(false);
+      Swal.fire("Tebrikler!", "Hatıra Biletinizi Aldınız!", "success");
+    }
+  }, [getNFT]);
+
+  const CheckDb = async (storedUserId: string) => {
+    try {
+      if (storedUserId && storedUserId !== "") {
+        const response = await axios.get(
+          "http://localhost:3500/v1/memory-ticket/get-user-info-for-memory",
+          {
+            params: {
+              userId: storedUserId,
+              activityName: "ttestt2",
+            },
+          }
+        );
+        if (response.data ) {
+          setBcAdrress(response.data.bcAddress)
+          setMnemonicIsShown(response.data.mnemonicIsShown)
+          setHasMemory(true)
+          const res = await axios.get(
+            "http://localhost:3500/v1/memory-ticket/get-NFT-metaData",
+            {
+              params: {
+                userId: storedUserId,
+                activityName: "ttestt2",
+              },
+            }
+          );
+          setIpfsImage(res.data)
+
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
@@ -70,15 +130,27 @@ export default function Home() {
           data-offset={500}
         >
           <div className="container">
-            <div style={{ display: "grid", gridTemplateColumns: "5fr 1fr", alignItems: "center", justifyContent: "center" }}>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "5fr 1fr",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
               <a href="#" className="navbar-brand">
                 <img alt="logo" width={"30%"} src="img/soly_logo_trans.png" />
               </a>
               {userId === "" ? (
                 <div
-                  style={{ height: "35px", display: "flex", alignItems: "center", justifyContent: "center" }}
+                  style={{
+                    height: "35px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
                 >
-                  <a className="btn btn-primary3" href="signin" >
+                  <a className="btn btn-primary3" href="signin">
                     Üye Ol
                   </a>
                 </div>
@@ -96,25 +168,34 @@ export default function Home() {
             alignItems: "center",
             width: "50vw",
             padding: "20px",
-            marginLeft: "10px"
+            marginLeft: "10px",
           }}
         >
+          {hasMemory ? 
           <button
-            className="bg-red-500  hover:bg-blue-700 text-white font-mono font-bold py-3 px-4 rounded-xl focus:outline-none focus:shadow-outline"
-            type="button"
-            onClick={() => setShowModal(true)}
-
-          >
-            29 Ekim Hatıra Biletinizi Alın!
-          </button>
-
+          className="bg-red-500  hover:bg-blue-700 text-white font-mono font-bold py-3 px-4 rounded-xl focus:outline-none focus:shadow-outline"
+          type="button"
+          onClick={() => setShowModal(true)}
+        >
+          29 Ekim Hatıra Biletiniz!
+        </button>:
+        <button
+        className="bg-red-500  hover:bg-blue-700 text-white font-mono font-bold py-3 px-4 rounded-xl focus:outline-none focus:shadow-outline"
+        type="button"
+        onClick={() => setShowModal(true)}
+      >
+        29 Ekim Hatıra Biletinizi Alın!
+      </button>
+          }
+          
         </div>
         <div className="container">
           <div className="page-banner home-banner">
             <div className="row align-items-center flex-wrap-reverse h-100">
               <div
-                className={`col-md-6 py-5 ${mounted ? "wow fadeInLeft animated" : ""
-                  }`}
+                className={`col-md-6 py-5 ${
+                  mounted ? "wow fadeInLeft animated" : ""
+                }`}
               >
                 <h1 className="mb-4">NFT, Bilet ile Buluşuyor!</h1>
                 <p className="text-lg text-grey mb-5">
@@ -123,8 +204,9 @@ export default function Home() {
                 </p>
               </div>
               <div
-                className={`col-md-6 py-0 ${mounted ? "wow fadeInLeft animated" : ""
-                  }`}
+                className={`col-md-6 py-0 ${
+                  mounted ? "wow fadeInLeft animated" : ""
+                }`}
               >
                 <img
                   alt="banner-png"
@@ -137,8 +219,9 @@ export default function Home() {
                 />
               </div>
               <div
-                className={`col-md-6 py-5  ${mounted ? "wow zoomIn animated" : ""
-                  }`}
+                className={`col-md-6 py-5  ${
+                  mounted ? "wow zoomIn animated" : ""
+                }`}
               >
                 <div className="img-fluid text-center"></div>
               </div>
@@ -165,8 +248,9 @@ export default function Home() {
           <div className="row">
             <div className="col-lg-4">
               <div
-                className={`card-service ${mounted ? "wow fadeInUp animated" : ""
-                  }`}
+                className={`card-service ${
+                  mounted ? "wow fadeInUp animated" : ""
+                }`}
               >
                 <div className="header2">
                   <img src="img/services/service-1.svg" alt="" />
@@ -183,8 +267,9 @@ export default function Home() {
             </div>
             <div className="col-lg-4">
               <div
-                className={`card-service ${mounted ? "wow fadeInUp animated" : ""
-                  }`}
+                className={`card-service ${
+                  mounted ? "wow fadeInUp animated" : ""
+                }`}
               >
                 <div className="header2">
                   <img src="img/services/service-2.svg" alt="" />
@@ -201,8 +286,9 @@ export default function Home() {
             </div>
             <div className="col-lg-4">
               <div
-                className={`card-service ${mounted ? "wow fadeInUp animated" : ""
-                  }`}
+                className={`card-service ${
+                  mounted ? "wow fadeInUp animated" : ""
+                }`}
               >
                 <div className="header2">
                   <img src="img/services/service-3.svg" alt="" />
@@ -225,8 +311,9 @@ export default function Home() {
         <div className="container">
           <div className="row align-items-center">
             <div
-              className={`col-lg-6 py-3 ${mounted ? "wow fadeInUp animated" : ""
-                }`}
+              className={`col-lg-6 py-3 ${
+                mounted ? "wow fadeInUp animated" : ""
+              }`}
             >
               <h2 className="title-section">Soly Dijital Koleksiyon</h2>
               <div className="divider" />
@@ -248,8 +335,9 @@ export default function Home() {
               </p>
             </div>
             <div
-              className={`col-lg-6 py-3 ${mounted ? "wow fadeInUp animated" : ""
-                }`}
+              className={`col-lg-6 py-3 ${
+                mounted ? "wow fadeInUp animated" : ""
+              }`}
             >
               <div className="img-fluid py-3 text-center">
                 <img src="img/about-part.jpg" alt="" />
@@ -272,8 +360,9 @@ export default function Home() {
           <div className="row">
             <div className="col-lg-4">
               <div
-                className={`card-service ${mounted ? "wow fadeInUp animated" : ""
-                  }`}
+                className={`card-service ${
+                  mounted ? "wow fadeInUp animated" : ""
+                }`}
               >
                 <div className="header2">
                   <img src="img/services/service-4.svg" alt="" />
@@ -290,8 +379,9 @@ export default function Home() {
             </div>
             <div className="col-lg-4">
               <div
-                className={`card-service ${mounted ? "wow fadeInUp animated" : ""
-                  }`}
+                className={`card-service ${
+                  mounted ? "wow fadeInUp animated" : ""
+                }`}
               >
                 <div className="header2">
                   <img src="img/services/service-5.svg" alt="" />
@@ -306,8 +396,9 @@ export default function Home() {
             </div>
             <div className="col-lg-4">
               <div
-                className={`card-service ${mounted ? "wow fadeInUp animated" : ""
-                  }`}
+                className={`card-service ${
+                  mounted ? "wow fadeInUp animated" : ""
+                }`}
               >
                 <div className="header2">
                   <img src="img/services/service-6.svg" alt="" />
@@ -335,8 +426,9 @@ export default function Home() {
         >
           <div className="container text-center">
             <div
-              className={`row justify-content-center ${mounted ? "wow fadeInUp animated" : ""
-                }`}
+              className={`row justify-content-center ${
+                mounted ? "wow fadeInUp animated" : ""
+              }`}
             >
               <div className="col-lg-8">
                 <h2 className="mb-4">Bizimle İletişime Geçin</h2>
@@ -387,8 +479,9 @@ export default function Home() {
       >
         <div className="container">
           <div
-            className={`row justify-content-center ${mounted ? "wow fadeInUp animated" : ""
-              }`}
+            className={`row justify-content-center ${
+              mounted ? "wow fadeInUp animated" : ""
+            }`}
           >
             <div className="col-lg-8 justify-content-center">
               <h3>Sosyal Medya Hesaplarımız</h3>
@@ -428,13 +521,26 @@ export default function Home() {
                     className="bg-transparent border-0 text-black float-right"
                     onClick={() => setShowModal(false)}
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      className="w-6 h-6"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
                     </svg>
-
                   </button>
                 </div>
-                <MemoryPage />
+                {hasMemory ?
+               <MemoryShow image={ipfsImage} bcAddress={bcAddress} mnemonicIsShown={mnemonicIsShown} />   :
+                <MemoryPage setGetNFT={setGetNFT} />
+              }
               </div>
             </div>
           </div>

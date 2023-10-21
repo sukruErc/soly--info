@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 // import myImage from '../../public/img/29_memory.png';
 
 interface MemoryPageProps {
+  setGetNFT: React.Dispatch<React.SetStateAction<boolean>>;
 
 }
 
@@ -49,15 +50,9 @@ const MemoryPage = (props: MemoryPageProps) => {
 
   const handleSignUpPopUp = async () => {
     if (nameForNFT !== "") {
+      
       if (userId !== "") {
-        const res = await axios.post(
-          "http://localhost:3500/v1/memory-ticket/generate-memory-ticket",
-          {
-            displayName: nameForNFT,
-            activityName: "ttestt",
-            userId: userId
-          }
-        );
+       
         let timerInterval: any;
         Swal.fire({
           title: 'Size Özel Hatıra Bileti üretiliyor',
@@ -90,7 +85,7 @@ const MemoryPage = (props: MemoryPageProps) => {
           },
           body: JSON.stringify({
             displayName: nameForNFT,
-            activityName: "ttestt",
+            activityName: "ttestt2",
             userId: userId
           })
         })
@@ -101,20 +96,12 @@ const MemoryPage = (props: MemoryPageProps) => {
             return response.json();
           })
           .then((data) => {
-            // if (data) {
+            debugger
 
-            //   localStorage.setItem("SOLY_USER_ID", data.token);
-            //   localStorage.setItem("SOLY_USER_NAME", signUpFormFields.name);
-            //   localStorage.setItem("SOLY_ENTERED", 'true');
-            //   window.location.href = "/";
-            // } else {
-            //   Swal.fire({
-            //     icon: "error",
-            //     title: "Oops...",
-            //     text: data.message,
-            //   });
-            // }
-            console.log(data)
+            if(data){
+
+              props.setGetNFT(true)
+            }
           })
           .catch((error) => {
 
