@@ -9,7 +9,7 @@
 .styledinput {
   width: 300px;
   padding: 10px;
-  margin-top: 20px;
+  /* margin-top: 20px; */
   border: 2px solid #ff0000;
   /* Red border */
   background-color: #ffffff;
@@ -38,9 +38,39 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
+.imagecontainer {
+  position: relative;
+  text-align: center;
+}
+
+.image2 {
+  display: block;
+  margin: 0 auto;
+  width: 20%;
+  /* Center the image horizontally */
+}
+
+.textoverlay {
+  position: absolute;
+  top: 37%;
+  /* Center the text vertically */
+  left: 50%;
+  /* Center the text horizontally */
+  transform: translate(-50%, -50%);
+  /* Center the text both vertically and horizontally */
+  /* background: rgba(0, 0, 0, 0.5); */
+  font-size: large;
+  color: white;
+  padding: 10px;
+}
+
 
 @media (max-width: 768px) {
   .logoImg {
     background-image: url("../../public/img/29_mobile.jpg");
+  }
+
+  .image2 {
+    width: 80%
   }
 }

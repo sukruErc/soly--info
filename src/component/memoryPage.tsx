@@ -50,9 +50,9 @@ const MemoryPage = (props: MemoryPageProps) => {
 
   const handleSignUpPopUp = async () => {
     if (nameForNFT !== "") {
-      
+
       if (userId !== "") {
-       
+
         let timerInterval: any;
         Swal.fire({
           title: 'Size Özel Hatıra Bileti üretiliyor',
@@ -85,7 +85,7 @@ const MemoryPage = (props: MemoryPageProps) => {
           },
           body: JSON.stringify({
             displayName: nameForNFT,
-            activityName: "ttestt2",
+            activityName: "ttestt3",
             userId: userId
           })
         })
@@ -96,9 +96,8 @@ const MemoryPage = (props: MemoryPageProps) => {
             return response.json();
           })
           .then((data) => {
-            debugger
 
-            if(data){
+            if (data) {
 
               props.setGetNFT(true)
             }
@@ -143,22 +142,13 @@ const MemoryPage = (props: MemoryPageProps) => {
           alignItems: "center",
           width: "100%",
           height: "100%",
-          gap: "10px",
+          // gap: "5px",
           // paddingTop: "10px",
         }}
       >
-        {/* <div>
-                    <button
-                        className="bg-transparent border-0 text-black float-right"
-                    >
-                        <span className="text-black opacity-7 h-6 w-6 text-xl block bg-gray-400 py-0 rounded-full">
-                            x
-                        </span>
-                    </button>
-                </div> */}
-        <h1 className="text-red-500 text-2xl font-mono">
+        <p className="text-red-500 text-3xl font-mono">
           29 Ekim Hatıra Bileti
-        </h1>
+        </p>
 
         <input
           type="text"
@@ -167,32 +157,39 @@ const MemoryPage = (props: MemoryPageProps) => {
           className={styles.styledinput}
           placeholder="Bilet İçin İsminizi Girinizs"
         />
-        <img
-          className=" pt-10"
-          src="/img/29_memory.png"
-          width={"20%"}
-          alt="Memory Image"
-        />
+        <div className={styles.imagecontainer}>
+          <img
+            className={styles.image2}
+            src="/img/29_memory.png"
+            alt="Memory Image"
+          />
+          <div className={styles.textoverlay}>{nameForNFT}</div>
+        </div>
 
-        <div className="flex items-center sm:justify-between flex-col gap-4">
-          {/* <a href="https://twitter.com/intent/tweet?text=Your%20tweet%20text%20goes%20here&url=Your%20URL%20goes%20here" target="_blank">Share on Twitter</a>
-        <a href="https://www.facebook.com/sharer/sharer.php?u=Your%20URL%20goes%20here" target="_blank">Share on Facebook</a> */}
 
-          <button
-            className="bg-red-500 w-full hover:bg-blue-700 text-white font-mono font-bold py-2 px-4 rounded-xl focus:outline-none focus:shadow-outline"
-            type="button"
+        <div className="flex items-center sm:justify-between flex-col p-2 ">
+          <div
             onClick={downloadImage}
-          >
-            Hatıra Biletini İndir
-          </button>
-          <button
-            className={styles.sbutton}
-            type="button"
+            className="gradient-div2">
+            <button
+              className="gradient-button2" type="button"
+            >
+              <span className="button-content2">
+                Hatıra Biletini İndir
+              </span>
+            </button>
+          </div>
+          <div
             onClick={handleSignUpPopUp}
-          >
-            Ücretsiz NFT'inizi Alın
-          </button>
-
+            className="gradient-div">
+            <button
+              className="gradient-button" type="button"
+            >
+              <span className="button-content2">
+                Ücretsiz NFT'inizi Alın
+              </span>
+            </button>
+          </div>
         </div>
       </div>
     </div>

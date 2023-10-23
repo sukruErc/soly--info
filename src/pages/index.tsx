@@ -23,6 +23,7 @@ export default function Home() {
   const [getNFT, setGetNFT] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [hasMemory, setHasMemory] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [bcAddress, setBcAdrress] = useState("")
   const [mnemonicIsShown, setMnemonicIsShown] = useState(false)
 
@@ -30,6 +31,9 @@ export default function Home() {
   const { hatiraBileti } = router.query;
 
   useEffect(() => {
+    if (window.screen.width < 850) {
+      setIsMobile(true)
+    }
     if (hatiraBileti) {
       setShowModal(true);
     }
@@ -38,7 +42,7 @@ export default function Home() {
     setUserId(storedUserId ? storedUserId : "");
     setMounted(true);
     const isSignupAlertShown = localStorage.getItem("SOLY_ENTERED");
-    CheckDb(storedUserId);
+    CheckDb(storedUserId as string);
 
     if (isSignupAlertShown === "true") {
       const Toast = Swal.mixin({
@@ -79,11 +83,13 @@ export default function Home() {
           {
             params: {
               userId: storedUserId,
-              activityName: "ttestt2",
+              activityName: "ttestt3",
             },
           }
         );
-        if (response.data ) {
+        if (response.data === undefined || response.data.isExist === false) {
+        }
+        else if (response.data) {
           setBcAdrress(response.data.bcAddress)
           setMnemonicIsShown(response.data.mnemonicIsShown)
           setHasMemory(true)
@@ -92,7 +98,7 @@ export default function Home() {
             {
               params: {
                 userId: storedUserId,
-                activityName: "ttestt2",
+                activityName: "ttestt3",
               },
             }
           );
@@ -133,14 +139,51 @@ export default function Home() {
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "5fr 1fr",
+                gridTemplateColumns: "3fr 2fr 1fr",
                 alignItems: "center",
                 justifyContent: "center",
+                gap: "15px"
               }}
             >
               <a href="#" className="navbar-brand">
-                <img alt="logo" width={"30%"} src="img/soly_logo_trans.png" />
+                <img alt="logo" width={"40%"} src="img/soly_logo_trans.png" />
               </a>
+              {
+                isMobile ?
+                  <></>
+                  :
+
+                  hasMemory ?
+                    <div className="gradient-div">
+                      <button
+                        className="gradient-button" type="button"
+                        onClick={() => setShowModal(true)}
+                      >
+                        <span className="button-content2">
+                          29 Ekim Hatıra Biletiniz!
+                          {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 010 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 010-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375z" />
+                          </svg> */}
+                        </span>
+                      </button>
+                    </div>
+                    :
+                    <div className="gradient-div">
+                      <button
+                        className="gradient-button" type="button"
+                        onClick={() => setShowModal(true)}
+                      >
+                        <span className="button-content2">
+
+                          29 Ekim Hatıra Biletinizi Alın!
+                          {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 010 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 010-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375z" />
+                          </svg> */}
+                        </span>
+                      </button>
+                    </div>
+
+              }
               {userId === "" ? (
                 <div
                   style={{
@@ -166,36 +209,48 @@ export default function Home() {
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
-            width: "50vw",
+            width: "100vw",
             padding: "20px",
             marginLeft: "10px",
           }}
         >
-          {hasMemory ? 
-          <button
-          className="bg-red-500  hover:bg-blue-700 text-white font-mono font-bold py-3 px-4 rounded-xl focus:outline-none focus:shadow-outline"
-          type="button"
-          onClick={() => setShowModal(true)}
-        >
-          29 Ekim Hatıra Biletiniz!
-        </button>:
-        <button
-        className="bg-red-500  hover:bg-blue-700 text-white font-mono font-bold py-3 px-4 rounded-xl focus:outline-none focus:shadow-outline"
-        type="button"
-        onClick={() => setShowModal(true)}
-      >
-        29 Ekim Hatıra Biletinizi Alın!
-      </button>
+          {
+            !isMobile ?
+              <></>
+              :
+
+              hasMemory ?
+                <div className="gradient-div">
+                  <button
+                    className="gradient-button" type="button"
+                    onClick={() => setShowModal(true)}
+                  >
+                    29 Ekim Hatıra Biletiniz!
+                    {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 010 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 010-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375z" />
+                    </svg> */}
+
+                  </button>
+                </div>
+                :
+                <div className="gradient-div">
+                  <button
+                    className="gradient-button" type="button"
+                    onClick={() => setShowModal(true)}
+                  >
+                    29 Ekim Hatıra Biletinizi Alın!
+                  </button>
+                </div>
+
           }
-          
+
         </div>
         <div className="container">
           <div className="page-banner home-banner">
             <div className="row align-items-center flex-wrap-reverse h-100">
               <div
-                className={`col-md-6 py-5 ${
-                  mounted ? "wow fadeInLeft animated" : ""
-                }`}
+                className={`col-md-6 py-5 ${mounted ? "wow fadeInLeft animated" : ""
+                  }`}
               >
                 <h1 className="mb-4">NFT, Bilet ile Buluşuyor!</h1>
                 <p className="text-lg text-grey mb-5">
@@ -204,9 +259,8 @@ export default function Home() {
                 </p>
               </div>
               <div
-                className={`col-md-6 py-0 ${
-                  mounted ? "wow fadeInLeft animated" : ""
-                }`}
+                className={`col-md-6 py-0 ${mounted ? "wow fadeInLeft animated" : ""
+                  }`}
               >
                 <img
                   alt="banner-png"
@@ -219,9 +273,8 @@ export default function Home() {
                 />
               </div>
               <div
-                className={`col-md-6 py-5  ${
-                  mounted ? "wow zoomIn animated" : ""
-                }`}
+                className={`col-md-6 py-5  ${mounted ? "wow zoomIn animated" : ""
+                  }`}
               >
                 <div className="img-fluid text-center"></div>
               </div>
@@ -248,9 +301,8 @@ export default function Home() {
           <div className="row">
             <div className="col-lg-4">
               <div
-                className={`card-service ${
-                  mounted ? "wow fadeInUp animated" : ""
-                }`}
+                className={`card-service ${mounted ? "wow fadeInUp animated" : ""
+                  }`}
               >
                 <div className="header2">
                   <img src="img/services/service-1.svg" alt="" />
@@ -267,9 +319,8 @@ export default function Home() {
             </div>
             <div className="col-lg-4">
               <div
-                className={`card-service ${
-                  mounted ? "wow fadeInUp animated" : ""
-                }`}
+                className={`card-service ${mounted ? "wow fadeInUp animated" : ""
+                  }`}
               >
                 <div className="header2">
                   <img src="img/services/service-2.svg" alt="" />
@@ -286,9 +337,8 @@ export default function Home() {
             </div>
             <div className="col-lg-4">
               <div
-                className={`card-service ${
-                  mounted ? "wow fadeInUp animated" : ""
-                }`}
+                className={`card-service ${mounted ? "wow fadeInUp animated" : ""
+                  }`}
               >
                 <div className="header2">
                   <img src="img/services/service-3.svg" alt="" />
@@ -311,33 +361,27 @@ export default function Home() {
         <div className="container">
           <div className="row align-items-center">
             <div
-              className={`col-lg-6 py-3 ${
-                mounted ? "wow fadeInUp animated" : ""
-              }`}
+              className={`col-lg-6 py-3 ${mounted ? "wow fadeInUp animated" : ""
+                }`}
             >
               <h2 className="title-section">Soly Dijital Koleksiyon</h2>
               <div className="divider" />
 
               <p>
-                Soly Dijital Koleksiyon ile her SolyTicket üyesinin bir dijital
-                koleksiyon defteri var. Bu defterde her sayfada ayrı görevler
-                yer almakta olup bu görevleri tamamlayan üyeler ücretsiz bilet
-                ile ödüllendirilecekler. Koleksiyon defterinde yer alacak
-                sayfaları dilenildiği gibi planlanabilir. Soly Dijital
-                Koleksiyon’un 2 hedefi var:
+                Her SolyTicket üyesi, Soly Dijital Koleksiyon defterine sahip olacak.
+                Bu defterde her sayfada farklı görevler bulunacak ve bu görevleri tamamlayan
+                üyeler ücretsiz bilet kazanacaklar. Soly Dijital Koleksiyon'un iki temel amacı var:
               </p>
               <p>
-                1- Organizatörlerin daha fazla müşteri çekebilmesini sağlamak
+                1- Organizatörlerin daha fazla müşteri çekmesini sağlamak,
               </p>
               <p>
-                2- Etkinlik katılımcılarının sadakatlerine karşılık ücretsiz
-                biletle ödüllendirilebilmelerini sağlamak.
+                2- Etkinlik katılımcılarının sadakatlerini ödüllendirmek için ücretsiz bilet sunmak.
               </p>
             </div>
             <div
-              className={`col-lg-6 py-3 ${
-                mounted ? "wow fadeInUp animated" : ""
-              }`}
+              className={`col-lg-6 py-3 ${mounted ? "wow fadeInUp animated" : ""
+                }`}
             >
               <div className="img-fluid py-3 text-center">
                 <img src="img/about-part.jpg" alt="" />
@@ -360,9 +404,8 @@ export default function Home() {
           <div className="row">
             <div className="col-lg-4">
               <div
-                className={`card-service ${
-                  mounted ? "wow fadeInUp animated" : ""
-                }`}
+                className={`card-service ${mounted ? "wow fadeInUp animated" : ""
+                  }`}
               >
                 <div className="header2">
                   <img src="img/services/service-4.svg" alt="" />
@@ -379,9 +422,8 @@ export default function Home() {
             </div>
             <div className="col-lg-4">
               <div
-                className={`card-service ${
-                  mounted ? "wow fadeInUp animated" : ""
-                }`}
+                className={`card-service ${mounted ? "wow fadeInUp animated" : ""
+                  }`}
               >
                 <div className="header2">
                   <img src="img/services/service-5.svg" alt="" />
@@ -396,9 +438,8 @@ export default function Home() {
             </div>
             <div className="col-lg-4">
               <div
-                className={`card-service ${
-                  mounted ? "wow fadeInUp animated" : ""
-                }`}
+                className={`card-service ${mounted ? "wow fadeInUp animated" : ""
+                  }`}
               >
                 <div className="header2">
                   <img src="img/services/service-6.svg" alt="" />
@@ -426,9 +467,8 @@ export default function Home() {
         >
           <div className="container text-center">
             <div
-              className={`row justify-content-center ${
-                mounted ? "wow fadeInUp animated" : ""
-              }`}
+              className={`row justify-content-center ${mounted ? "wow fadeInUp animated" : ""
+                }`}
             >
               <div className="col-lg-8">
                 <h2 className="mb-4">Bizimle İletişime Geçin</h2>
@@ -479,9 +519,8 @@ export default function Home() {
       >
         <div className="container">
           <div
-            className={`row justify-content-center ${
-              mounted ? "wow fadeInUp animated" : ""
-            }`}
+            className={`row justify-content-center ${mounted ? "wow fadeInUp animated" : ""
+              }`}
           >
             <div className="col-lg-8 justify-content-center">
               <h3>Sosyal Medya Hesaplarımız</h3>
@@ -513,7 +552,7 @@ export default function Home() {
       {showModal ? (
         <>
           <div className=" flex justify-center items-center bg-gray-100 bg-opacity-50 fixed inset-0 z-50 outline-none focus:outline-none">
-            <div className="relative w-4/6 h-4/6  ">
+            <div className="relative w-10/12 h-10/12  ">
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col  bg-white outline-none focus:outline-none">
                 <div className="flex items-start justify-end border-b border-solid border-gray-300 rounded-t p-1 ">
                   {/* <h3 className="text-3xl font=semibold">General Info</h3> */}
@@ -538,9 +577,9 @@ export default function Home() {
                   </button>
                 </div>
                 {hasMemory ?
-               <MemoryShow image={ipfsImage} bcAddress={bcAddress} mnemonicIsShown={mnemonicIsShown} />   :
-                <MemoryPage setGetNFT={setGetNFT} />
-              }
+                  <MemoryShow image={ipfsImage} bcAddress={bcAddress} mnemonicIsShown={mnemonicIsShown} /> :
+                  <MemoryPage setGetNFT={setGetNFT} />
+                }
               </div>
             </div>
           </div>

@@ -428,21 +428,91 @@ a.text-dark:focus {
 
 /* Buttons */
 .gradient-button {
-  background: linear-gradient( #FF6B6B, #6B47FF);
+  background: linear-gradient(#fb5a30, #eb0a06);
   /* border-color: linear-gradient( #6B47FF, #FF6B6B); */
-  border: 15px solid linear-gradient( #6B47FF, #FF6B6B);
-  border-radius: 20px; /* Adjust the border radius as needed */
+  /* border: 1px solid; */
+  border-radius: 20px;
+  /* Adjust the border radius as needed */
   color: #fff;
-  font-size: 16px;
-  padding: 10px 20px;
+  font-size: 18px;
+  padding: 5px 20px;
   cursor: pointer;
   /* transition: background 0.3s, border 0.3s; */
 }
 
 .gradient-button:hover {
-  background: linear-gradient(45deg, #6B47FF, #FF6B6B);
+  background: linear-gradient(45deg, #eb0a06, #fb5a30);
   border-color: #fff;
 }
+
+.gradient-div {
+  display: grid;
+  background: linear-gradient(#eb0a06,
+      #fb5a30);
+  /* border-color: linear-gradient( #6B47FF, #FF6B6B); */
+  /* border: 15px solid linear-gradient(#eb0a06, #fb5a30); */
+  border-radius: 20px;
+  /* Adjust the border radius as needed */
+  color: #fff;
+  font-size: 16px;
+  padding: 5px 10px;
+  margin: 5px;
+  cursor: pointer;
+  /* transition: background 0.3s, border 0.3s; */
+}
+
+.gradient-div:hover {
+  background: linear-gradient(45deg, #fb5a30, #eb0a06);
+  border-color: #fff;
+}
+
+.button-content2 {
+  display: grid;
+  /* grid-template-columns: 4fr 1fr; */
+  justify-content: center;
+  vertical-align: middle;
+}
+
+.gradient-button2 {
+  background: linear-gradient(#f6f9fc, #d3dee9);
+  /* border-color: linear-gradient( #6B47FF, #FF6B6B); */
+  /* border: 1px solid; */
+  border-radius: 20px;
+  /* Adjust the border radius as needed */
+  color: #000;
+  font-size: 18px;
+  padding: 5px 20px;
+  cursor: pointer;
+  /* transition: background 0.3s, border 0.3s; */
+}
+
+.gradient-button2:hover {
+  background: linear-gradient(45deg, #d3dee9, #f6f9fc);
+  border-color: #fff;
+}
+
+.gradient-div2 {
+  display: grid;
+  background: linear-gradient(#d3dee9,
+      #f6f9fc);
+  /* border-color: linear-gradient( #6B47FF, #FF6B6B); */
+  /* border: 15px solid linear-gradient(#eb0a06, #fb5a30); */
+  border-radius: 20px;
+  margin: 5px;
+  /* Adjust the border radius as needed */
+  color: #fff;
+  font-size: 16px;
+  padding: 5px 10px;
+  cursor: pointer;
+  /* transition: background 0.3s, border 0.3s; */
+}
+
+.gradient-div2:hover {
+  background: linear-gradient(45deg, #f6f9fc, #d3dee9);
+  border-color: #fff;
+}
+
+
 .btn-primary2 {
   color: #fff;
   background-color: #6C55F9;

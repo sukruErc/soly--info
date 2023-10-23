@@ -19,13 +19,78 @@ const MemoryShow = (props: MemoryShowProps) => {
   const [userId, setUserId] = useState<string>("");
   const [userName, setUserName] = useState<string | null>(null);
 
+  const [buttonText, setButtonText] = useState("İfadenizi Kopyalayın")
+
   useEffect(() => {
     const storedUserId = localStorage.getItem("SOLY_USER_ID");
     setUserName(localStorage.getItem("SOLY_USER_NAME"))
     setUserId(storedUserId ? storedUserId : "");
   }, []);
 
-  
+
+  const handleMetaGuide = () => {
+    console.log(props.mnemonicIsShown)
+    Swal.fire({
+      title: 'Sizin Yerinize Açtığımız Cüzdanı Nasıl Kullanılır?',
+      html:
+        '1- Tarayıcınıza yada telefon uygulamasını indiriniz.<br>' +
+        '2- İndirdikten sonra karşınıza çıkan ilk sayfada "Mevcut bir cüzdanı içe aktar" seçeneğine tıklayınız.<br>' +
+        '3- Güvenlik amacıyla size tek seferlik verebileceğimiz 12 haneli gizli kurtarma ifadenizi Metamaska giriniz. (Tek seferlik gösterileceği için lütfen güvenlikli saklayınız ve kimse ile paylaşmayınız)<br>' +
+        '4- Cüzdanınıza parola oluşturunuz.<br>' +
+        '5- Artık hatıra biletinizi cüzdanınızda görebilirsiniz.',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      cancelButtonText: "İptal",
+      confirmButtonText: '12 haneli gizli kurtarma ifadenizi görüntüleyin'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const mnemonic = await getMne() as string
+        Swal.fire({
+          title: 'Gizli Kurtarma İfadenizi Kaydedin ve Paylaşmayın!',
+          text: mnemonic,
+          icon: 'warning',
+          confirmButtonText: buttonText,
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            setButtonText("Kaydedildi")
+            await handleCopyToClipboard(mnemonic)
+          }
+        });
+
+      }
+    })
+
+  }
+
+  const handleCopyToClipboard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch (error) {
+      console.error('Failed to copy text: ', error);
+    }
+  }
+
+  const getMne = async (): Promise<string> => {
+    try {
+      const response = await axios.get(
+        "http://localhost:3500/v1/users/get-mne",
+        {
+          params: {
+            userId: localStorage.getItem("SOLY_USER_ID"),
+          },
+        }
+      );
+      if (response.data) {
+        return response.data
+      }
+      return ""
+    } catch (error) {
+      console.log(error)
+      return ""
+    }
+  }
 
 
   return (
@@ -39,43 +104,30 @@ const MemoryShow = (props: MemoryShowProps) => {
           alignItems: "center",
           width: "100%",
           height: "100%",
-          gap: "10px",
+          // gap: "10px",
           // paddingTop: "10px",
         }}
       >
-        {/* <div>
-                    <button
-                        className="bg-transparent border-0 text-black float-right"
-                    >
-                        <span className="text-black opacity-7 h-6 w-6 text-xl block bg-gray-400 py-0 rounded-full">
-                            x
-                        </span>
-                    </button>
-                </div> */}
-        <h1 className="text-red-500 text-2xl font-mono">
+        <p className="text-red-500 text-3xl font-mono">
           29 Ekim Hatıra Bileti
-        </h1>
+        </p>
 
-      
+
         <img
-          className=" pt-10"
+          className={styles.image2}
           src={props.image}
-          width={"20%"}
           alt="Memory Image"
         />
+        {props.mnemonicIsShown ?
+          <></>
+          :
+          <div onClick={handleMetaGuide} className="flex items-center sm:justify-between flex-col gap-4">
+            <div className="gradient-div">
 
-        <div className="flex items-center sm:justify-between flex-col gap-4">
-        <button className="gradient-button">Click Me</button>
-
-          {/* <button
-            className="bg-red-500 w-full hover:bg-blue-700 text-white font-mono font-bold py-2 px-4 rounded-xl focus:outline-none focus:shadow-outline"
-            type="button"
-            // onClick={downloadImage}
-          >
-            Hatıra Biletini İndir
-          </button> */}
-
-        </div>
+              <button className="gradient-button">Cüzdanınızda Görüntüleyin</button>
+            </div>
+          </div>
+        }
       </div>
     </div>
   );

@@ -130,7 +130,6 @@ const SignUp = () => {
           })
           .then((data) => {
             if (data) {
-
               localStorage.setItem("SOLY_USER_ID", data.userId);
               localStorage.setItem("SOLY_USER_NAME", signUpFormFields.name);
               localStorage.setItem("SOLY_ENTERED", 'true');
@@ -140,7 +139,7 @@ const SignUp = () => {
                 text: "Hatıra Biletinizi Aldınız!",
                 confirmButtonText: 'Anasayfaya Gidin',
 
-                
+
               }).then((result) => {
                 if (result.isConfirmed) {
                   window.location.href = "/";
@@ -336,7 +335,7 @@ const SignUp = () => {
         } else {
           const response: any = await axios.post(
             // "http://195.85.201.62:8080/v1/users/metamask-signup",
-"http://localhost:3500/v1/users/metamask-signup",
+            "http://localhost:3500/v1/users/metamask-signup",
             {
               email: formValues?.email,
               password: formValues?.pass,
