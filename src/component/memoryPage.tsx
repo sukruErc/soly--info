@@ -26,7 +26,8 @@ const MemoryPage = (props: MemoryPageProps) => {
   const downloadImage = async () => {
     if (nameForNFT !== "") {
       const res = await axios.post(
-        "http://localhost:3500/v1/memory-ticket/generate-memory-image",
+        // "http://localhost:3500/v1/memory-ticket/generate-memory-image",
+        "http://195.85.201.62:8090/v1/memory-ticket/generate-memory-image",
         {
           displayName: nameForNFT,
         }
@@ -77,8 +78,9 @@ const MemoryPage = (props: MemoryPageProps) => {
           // backdrop: false,
           allowOutsideClick: false
         });
-
-        fetch('http://localhost:3500/v1/memory-ticket/generate-memory-ticket', {
+        
+        // fetch('http://localhost:3500/v1/memory-ticket/generate-memory-ticket', {
+          fetch('http://195.85.201.62:8090/v1/memory-ticket/generate-memory-ticket', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -186,7 +188,7 @@ const MemoryPage = (props: MemoryPageProps) => {
               className="gradient-button" type="button"
             >
               <span className="button-content2">
-                Ücretsiz NFT'inizi Alın
+              Ücretsiz NFT&rsquo;inizi Alın
               </span>
             </button>
           </div>

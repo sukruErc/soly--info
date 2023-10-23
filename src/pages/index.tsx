@@ -79,7 +79,9 @@ export default function Home() {
     try {
       if (storedUserId && storedUserId !== "") {
         const response = await axios.get(
-          "http://localhost:3500/v1/memory-ticket/get-user-info-for-memory",
+          
+          "http://195.85.201.62:8090/v1/memory-ticket/get-user-info-for-memory",
+          // "http://localhost:3500/v1/memory-ticket/get-user-info-for-memory",
           {
             params: {
               userId: storedUserId,
@@ -94,7 +96,9 @@ export default function Home() {
           setMnemonicIsShown(response.data.mnemonicIsShown)
           setHasMemory(true)
           const res = await axios.get(
-            "http://localhost:3500/v1/memory-ticket/get-NFT-metaData",
+            
+            "http://195.85.201.62:8090/v1/memory-ticket/get-NFT-metaData",
+            // "http://localhost:3500/v1/memory-ticket/get-NFT-metaData",
             {
               params: {
                 userId: storedUserId,
@@ -370,7 +374,7 @@ export default function Home() {
               <p>
                 Her SolyTicket üyesi, Soly Dijital Koleksiyon defterine sahip olacak.
                 Bu defterde her sayfada farklı görevler bulunacak ve bu görevleri tamamlayan
-                üyeler ücretsiz bilet kazanacaklar. Soly Dijital Koleksiyon'un iki temel amacı var:
+                Üyeler ücretsiz bilet kazanacaklar. Soly Dijital Koleksiyon&apos;un iki temel amacı var:
               </p>
               <p>
                 1- Organizatörlerin daha fazla müşteri çekmesini sağlamak,
