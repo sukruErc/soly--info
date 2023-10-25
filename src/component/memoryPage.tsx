@@ -1,8 +1,10 @@
 import styles from "@/styles/Test.module.css";
 import axios from "axios";
+import { createCanvas, loadImage } from "canvas";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import WebFont from 'webfontloader'; 
 // import myImage from '../../public/img/29_memory.png';
 
 interface MemoryPageProps {
@@ -10,12 +12,46 @@ interface MemoryPageProps {
 
 }
 
+const addTextOverlayToImage = ( text: string): HTMLCanvasElement => {
+  const canvas = document.createElement('canvas');
+  const image = new Image();
+  image.src = 'img/29_memory.png';
+  const context = canvas.getContext('2d');
+
+  image.onload = () => {
+    canvas.width = image.width;
+    canvas.height = image.height;
+
+    if(context){
+
+      context.drawImage(image, 0, 0, canvas.width, canvas.height);
+      
+      context.font = 'bold 160px Oswald';
+    
+      context.fillStyle = 'white';
+      context.textAlign = 'center';
+    context.textBaseline = 'middle';
+
+      
+      context.fillText(text, image.width/2, image.height/2 -550);
+      
+      // You can add more text or styling as required
+      
+      // Cleanup
+      context.restore();
+    }
+  };
+
+  return canvas;
+};
+
 const MemoryPage = (props: MemoryPageProps) => {
   const router = useRouter();
   const [nameForNFT, setNameForNFT] = useState("");
 
   const [userId, setUserId] = useState<string>("");
   const [userName, setUserName] = useState<string | null>(null);
+  const canvas = addTextOverlayToImage(nameForNFT);
 
   useEffect(() => {
     const storedUserId = localStorage.getItem("SOLY_USER_ID");
@@ -25,20 +61,26 @@ const MemoryPage = (props: MemoryPageProps) => {
 
   const downloadImage = async () => {
     if (nameForNFT !== "") {
-      const res = await axios.post(
-        "http://localhost:3500/v1/memory-ticket/generate-memory-image",
-        // "http://195.85.201.62:8080/v1/memory-ticket/generate-memory-image",
-        {
-          displayName: nameForNFT,
-        }
-      );
-      if (res) {
-        const imageUrl = res.data;
-        const link = document.createElement("a");
-        link.href = imageUrl;
-        link.download = "29_ekim_hatira_bileti.png";
-        link.click();
-      }
+      // const res = await axios.post(
+      //   "http://localhost:3500/v1/memory-ticket/generate-memory-image",
+      //   // "http://195.85.201.62:8080/v1/memory-ticket/generate-memory-image",
+      //   {
+      //     displayName: nameForNFT,
+      //   }
+      // );
+      // if (res) {
+      //   // debugger
+      //   const imageUrl = res.data;
+      //   const link = document.createElement("a");
+      //   link.href = imageUrl;
+      //   link.download = "29_ekim_hatira_bileti.png";
+      //   link.click();
+      // }
+      const dataURL = canvas.toDataURL('image/png');
+      const link = document.createElement('a');
+      link.href = dataURL;
+      link.download = 'image_with_text_overlay.png';
+      link.click();
     } else {
       Swal.fire({
         icon: "error",
@@ -47,6 +89,7 @@ const MemoryPage = (props: MemoryPageProps) => {
       });
     }
   };
+    
 
   const handleSignUpPopUp = async () => {
     if (nameForNFT !== "") {
