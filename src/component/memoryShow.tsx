@@ -14,7 +14,6 @@ interface MemoryShowProps {
 
 const MemoryShow = (props: MemoryShowProps) => {
   const router = useRouter();
-  const [nameForNFT, setNameForNFT] = useState("");
 
   const [userId, setUserId] = useState<string>("");
   const [userName, setUserName] = useState<string | null>(null);
@@ -76,7 +75,7 @@ const MemoryShow = (props: MemoryShowProps) => {
     try {
       const response = await axios.get(
         // "http://localhost:3500/v1/users/get-mne",
-        "http://195.85.201.62:8090/v1/users/get-mne",
+        "http://195.85.201.62:8080/v1/users/get-mne",
         {
           params: {
             userId: localStorage.getItem("SOLY_USER_ID"),
@@ -92,6 +91,24 @@ const MemoryShow = (props: MemoryShowProps) => {
       return ""
     }
   }
+
+  const downloadImage = async () => {
+    const res = await axios.post(
+      "http://localhost:3500/v1/memory-ticket/generate-memory-image",
+      // "http://195.85.201.62:8080/v1/memory-ticket/generate-memory-image",
+      {
+        displayName: "",
+      }
+    );
+    if (res) {
+      const imageUrl = res.data;
+      const link = document.createElement("a");
+      link.href = imageUrl;
+      link.download = "29_ekim_hatira_bileti.png";
+      link.click();
+    }
+
+  };
 
 
   return (
@@ -129,6 +146,19 @@ const MemoryShow = (props: MemoryShowProps) => {
             </div>
           </div>
         }
+        <div className="flex items-center sm:justify-between flex-col p-2 ">
+          <div
+            onClick={downloadImage}
+            className="gradient-div2">
+            <button
+              className="gradient-button2" type="button"
+            >
+              <span className="button-content2">
+                Hatıra Biletini İndir
+              </span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );

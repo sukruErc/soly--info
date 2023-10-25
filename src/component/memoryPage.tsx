@@ -26,18 +26,17 @@ const MemoryPage = (props: MemoryPageProps) => {
   const downloadImage = async () => {
     if (nameForNFT !== "") {
       const res = await axios.post(
-        // "http://localhost:3500/v1/memory-ticket/generate-memory-image",
-        "http://195.85.201.62:8090/v1/memory-ticket/generate-memory-image",
+        "http://localhost:3500/v1/memory-ticket/generate-memory-image",
+        // "http://195.85.201.62:8080/v1/memory-ticket/generate-memory-image",
         {
           displayName: nameForNFT,
         }
       );
       if (res) {
         const imageUrl = res.data;
-        // const imageUrl = '/img/29_memory.png'; // Path to your image in the public directory
         const link = document.createElement("a");
         link.href = imageUrl;
-        link.download = "29_ekim_hatira_bileti.png"; // Set the desired filename
+        link.download = "29_ekim_hatira_bileti.png";
         link.click();
       }
     } else {
@@ -78,9 +77,9 @@ const MemoryPage = (props: MemoryPageProps) => {
           // backdrop: false,
           allowOutsideClick: false
         });
-        
+
         // fetch('http://localhost:3500/v1/memory-ticket/generate-memory-ticket', {
-          fetch('http://195.85.201.62:8090/v1/memory-ticket/generate-memory-ticket', {
+        fetch('http://195.85.201.62:8080/v1/memory-ticket/generate-memory-ticket', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -148,9 +147,10 @@ const MemoryPage = (props: MemoryPageProps) => {
           // paddingTop: "10px",
         }}
       >
-        <p className="text-red-500 text-3xl font-mono">
+        <h2 className="title-section">
           29 Ekim Hatıra Bileti
-        </p>
+        </h2>
+
 
         <input
           type="text"
@@ -188,7 +188,7 @@ const MemoryPage = (props: MemoryPageProps) => {
               className="gradient-button" type="button"
             >
               <span className="button-content2">
-              Ücretsiz NFT&rsquo;inizi Alın
+                Ücretsiz NFT&rsquo;inizi Alın
               </span>
             </button>
           </div>

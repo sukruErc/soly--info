@@ -79,8 +79,8 @@ export default function Home() {
     try {
       if (storedUserId && storedUserId !== "") {
         const response = await axios.get(
-          
-          "http://195.85.201.62:8090/v1/memory-ticket/get-user-info-for-memory",
+
+          "http://195.85.201.62:8080/v1/memory-ticket/get-user-info-for-memory",
           // "http://localhost:3500/v1/memory-ticket/get-user-info-for-memory",
           {
             params: {
@@ -96,8 +96,8 @@ export default function Home() {
           setMnemonicIsShown(response.data.mnemonicIsShown)
           setHasMemory(true)
           const res = await axios.get(
-            
-            "http://195.85.201.62:8090/v1/memory-ticket/get-NFT-metaData",
+
+            "http://195.85.201.62:8080/v1/memory-ticket/get-NFT-metaData",
             // "http://localhost:3500/v1/memory-ticket/get-NFT-metaData",
             {
               params: {
@@ -143,7 +143,7 @@ export default function Home() {
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "3fr 2fr 1fr",
+                gridTemplateColumns: isMobile ? "5fr 1fr" : "3fr 2fr 1fr",
                 alignItems: "center",
                 justifyContent: "center",
                 gap: "15px"
@@ -165,9 +165,7 @@ export default function Home() {
                       >
                         <span className="button-content2">
                           29 Ekim Hatıra Biletiniz!
-                          {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 010 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 010-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375z" />
-                          </svg> */}
+
                         </span>
                       </button>
                     </div>

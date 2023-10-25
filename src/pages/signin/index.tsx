@@ -106,9 +106,9 @@ const SignUp = () => {
           // backdrop: false,
           allowOutsideClick: false
         });
-        
-        fetch('http://195.85.201.62:8090/v1/users/signup', {
-        // fetch('http://localhost:3500/v1/users/signup', {
+
+        fetch('http://195.85.201.62:8080/v1/users/signup', {
+          // fetch('http://localhost:3500/v1/users/signup', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json', // Set the Content-Type to JSON
@@ -160,7 +160,7 @@ const SignUp = () => {
           });
 
       } else {
-        const response: any = await axios.post('http://195.85.201.62:8090/v1/users/signup', {
+        const response: any = await axios.post('http://195.85.201.62:8080/v1/users/signup', {
           // const response: any = await axios.post('http://localhost:3500/v1/users/signup', {
           // const response: any = await axios.post(
           //   "http://195.85.201.62:8080/v1/users/signup",
@@ -292,8 +292,8 @@ const SignUp = () => {
             // backdrop: false,
             allowOutsideClick: false
           });
-          
-          fetch('http://195.85.201.62:8090/v1/users/metamask-signup', {
+
+          fetch('http://195.85.201.62:8080/v1/users/metamask-signup', {
             // fetch('http://localhost:3500/v1/users/metamask-signup', {
             method: 'POST',
             headers: {
@@ -337,7 +337,7 @@ const SignUp = () => {
 
         } else {
           const response: any = await axios.post(
-            "http://195.85.201.62:8090/v1/users/metamask-signup",
+            "http://195.85.201.62:8080/v1/users/metamask-signup",
             // "http://localhost:3500/v1/users/metamask-signup",
             {
               email: formValues?.email,
@@ -408,8 +408,8 @@ const SignUp = () => {
           // backdrop: false,
           allowOutsideClick: false
         });
-        
-        fetch('http://195.85.201.62:8090/v1/users/google-signup', {
+
+        fetch('http://195.85.201.62:8080/v1/users/google-signup', {
           // fetch('http://localhost:3500/v1/users/google-signup', {
           method: 'POST',
           headers: {
@@ -452,7 +452,7 @@ const SignUp = () => {
       } else {
 
         const response: any = await axios.post(
-          "http://195.85.201.62:8090/v1/users/google-signup",
+          "http://195.85.201.62:8080/v1/users/google-signup",
           {
             email: request.email,
             name: request.userName,
