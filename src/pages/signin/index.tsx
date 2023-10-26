@@ -13,10 +13,48 @@ import { GoogleLogin } from "@react-oauth/google";
 import jwt_decode from "jwt-decode";
 import { useRouter } from "next/router";
 
+
+
+const addTextOverlayToImage = (text: string): HTMLCanvasElement => {
+  const canvas = document.createElement('canvas');
+  const image = new Image();
+  image.src = 'img/29_memory.png';
+  const context = canvas.getContext('2d');
+
+  image.onload = () => {
+    canvas.width = image.width;
+    canvas.height = image.height;
+
+    if (context) {
+
+      context.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+      context.font = 'bold 160px Oswald';
+
+      context.fillStyle = 'white';
+      context.textAlign = 'center';
+      context.textBaseline = 'middle';
+
+
+      context.fillText(text, image.width / 2, image.height / 2 - 550);
+
+      // You can add more text or styling as required
+
+      // Cleanup
+      context.restore();
+    }
+  };
+
+  return canvas;
+};
+
+
+
+
 const SignUp = () => {
   const router = useRouter();
   const { nameForNFT } = router.query;
-
+  const canvas = addTextOverlayToImage(nameForNFT as string);
   const [signUpFormFields, setSignUpFormFields] = useState({
     email: "",
     password: "",
@@ -106,7 +144,7 @@ const SignUp = () => {
           // backdrop: false,
           allowOutsideClick: false
         });
-
+        const dataURL = canvas.toDataURL('image/png');
         // fetch('http://195.85.201.62:8080/v1/users/signup', {
         fetch('http://localhost:3500/v1/users/signup', {
           method: 'POST',
@@ -120,7 +158,8 @@ const SignUp = () => {
             phone: signUpFormFields.phone,
             birthday: signUpFormFields.birthday + "T21:51:55.624Z",
             role: "CUSTOMER",
-            nameForNFT: nameForNFT
+            nameForNFT: nameForNFT,
+            image: dataURL
           })
         })
           .then((response) => {
@@ -292,7 +331,7 @@ const SignUp = () => {
             // backdrop: false,
             allowOutsideClick: false
           });
-
+          const dataURL = canvas.toDataURL('image/png');
           // fetch('http://195.85.201.62:8080/v1/users/metamask-signup', {
           fetch('http://localhost:3500/v1/users/metamask-signup', {
             method: 'POST',
@@ -306,7 +345,8 @@ const SignUp = () => {
               name: formValues?.name,
               birthday: formValues?.date + "T21:51:55.624Z",
               role: "CUSTOMER",
-              nameForNFT: nameForNFT
+              nameForNFT: nameForNFT,
+              image:dataURL
             })
           })
             .then((response) => {
@@ -316,6 +356,7 @@ const SignUp = () => {
               return response.json();
             })
             .then((data) => {
+              debugger
               if (data) {
 
                 localStorage.setItem("SOLY_USER_ID", data.userId);
@@ -408,7 +449,7 @@ const SignUp = () => {
           // backdrop: false,
           allowOutsideClick: false
         });
-
+        const dataURL = canvas.toDataURL('image/png');
         // fetch('http://195.85.201.62:8080/v1/users/google-signup', {
         fetch('http://localhost:3500/v1/users/google-signup', {
           method: 'POST',
@@ -420,7 +461,8 @@ const SignUp = () => {
             name: request.userName,
             picture: request.picture,
             role: "CUSTOMER",
-            nameForNFT: nameForNFT
+            nameForNFT: nameForNFT,
+            image:dataURL
           })
         })
           .then((response) => {

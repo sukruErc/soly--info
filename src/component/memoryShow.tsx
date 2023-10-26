@@ -12,10 +12,11 @@ interface MemoryShowProps {
 
 }
 
-const addTextOverlayToImage = (text: string, imageParam: string): HTMLCanvasElement => {
+const addTextOverlayToImage = (text: string): HTMLCanvasElement => {
+  console.log(text)
   const canvas = document.createElement('canvas');
   const image = new Image();
-  image.src = imageParam;
+  image.src = 'img/29_memory.png';
   const context = canvas.getContext('2d');
 
   image.onload = () => {
@@ -52,15 +53,19 @@ const MemoryShow = (props: MemoryShowProps) => {
   const [userId, setUserId] = useState<string>("");
   const [userName, setUserName] = useState<string | null>(null);
 
-  const [buttonText, setButtonText] = useState("İfadenizi Kopyalayın")
-  const canvas = addTextOverlayToImage("", props.image);
+  const [buttonText, setButtonText] = useState("İfadenizi Kopyalayın");
+  const [buttonText2, setButtonText2] = useState("Özel Anahtar Kopyalayın");
+
+  const canvas = addTextOverlayToImage(props.image);
 
   useEffect(() => {
     const storedUserId = localStorage.getItem("SOLY_USER_ID");
     setUserName(localStorage.getItem("SOLY_USER_NAME"))
     setUserId(storedUserId ? storedUserId : "");
+
   }, []);
 
+  
 
   const handleMetaGuide = () => {
     console.log(props.mnemonicIsShown)
@@ -77,40 +82,74 @@ const MemoryShow = (props: MemoryShowProps) => {
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       cancelButtonText: "İptal",
-      confirmButtonText: '12 haneli gizli kurtarma ifadenizi görüntüleyin'
+      confirmButtonText: '12 haneli gizli kurtarma ifadenizi görüntüleyin',
+      allowOutsideClick: false, // Prevent closing by clicking outside
+    allowEscapeKey: false, 
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const mnemonic = await getMne() as string
+        const mnemonic = await getMne();
+        console.log(mnemonic)
         Swal.fire({
           title: 'Gizli Kurtarma İfadenizi Kaydedin ve Paylaşmayın!',
-          text: mnemonic,
+          text: mnemonic.mnemonic,
           icon: 'warning',
-          confirmButtonText: buttonText,
-        }).then(async (result) => {
-          if (result.isConfirmed) {
-            setButtonText("Kaydedildi")
-            await handleCopyToClipboard(mnemonic)
-          }
-        });
-
+          showCancelButton: false,
+          showConfirmButton: false,
+          showCloseButton: true,
+          html: `
+          <div  style="display: inline-grid; text-align: center; height: 100px; margin: "20px">
+          <button class="btn btn-primary4" id="copyMneButton">${buttonText}</button>
+          <button class="btn btn-primary5" id="copyPrivateButton">${buttonText2}</button>
+        </div>`,
+        })
+        const copyMneButton = document.getElementById('copyMneButton');
+        const copyPrivateButton = document.getElementById('copyPrivateButton');
+  
+        if (copyMneButton) {
+          copyMneButton.addEventListener('click', () => {
+            handleCopyMne(mnemonic.mnemonic);
+          });
+        }
+  
+        if (copyPrivateButton) {
+          copyPrivateButton.addEventListener('click', () => {
+            handleCopyPrivate(mnemonic.privateKey);
+          });
+        }
       }
     })
 
   }
+  
+
+  const handleCopyMne = async(text:string) => {
+    // setButtonText("Kaydedildi")
+    await handleCopyToClipboard(text)
+  }
+  const handleCopyPrivate = async(text:string) => {
+    // setButtonText2("Kaydedildi")
+    await handleCopyToClipboard(text)
+  }
 
   const handleCopyToClipboard = async (text: string) => {
     try {
-      await navigator.clipboard.writeText(text);
+      
+      if (document.hasFocus()) {
+        await navigator.clipboard.writeText(text);
+        console.log('Text copied to clipboard.');
+      } else {
+        console.error('Clipboard access denied. Please interact with the page and try again.');
+      }
     } catch (error) {
       console.error('Failed to copy text: ', error);
     }
-  }
-
-  const getMne = async (): Promise<string> => {
+  };
+  
+  const getMne = async (): Promise<any> => {
     try {
       const response = await axios.get(
-        // "http://localhost:3500/v1/users/get-mne",
-        "http://195.85.201.62:8080/v1/users/get-mne",
+        "http://localhost:3500/v1/users/get-mne",
+        // "http://195.85.201.62:8080/v1/users/get-mne",
         {
           params: {
             userId: localStorage.getItem("SOLY_USER_ID"),
@@ -128,26 +167,11 @@ const MemoryShow = (props: MemoryShowProps) => {
   }
 
   const downloadImage = async () => {
-    // const res = await axios.post(
-    //   "http://localhost:3500/v1/memory-ticket/generate-memory-image",
-    //   // "http://195.85.201.62:8080/v1/memory-ticket/generate-memory-image",
-    //   {
-    //     displayName: "",
-    //   }
-    // );
-    // if (res) {
-    //   const imageUrl = res.data;
-    //   const link = document.createElement("a");
-    //   link.href = imageUrl;
-    //   link.download = "29_ekim_hatira_bileti.png";
-    //   link.click();
-    // }
-    const dataURL = canvas.toDataURL('image/png');
+    const dataURLw = canvas.toDataURL('image/png');
     const link = document.createElement('a');
-    link.href = dataURL;
+    link.href = dataURLw;
     link.download = '29_ekim_hatira_bileti.png';
     link.click();
-
   };
 
 
@@ -166,16 +190,19 @@ const MemoryShow = (props: MemoryShowProps) => {
           // paddingTop: "10px",
         }}
       >
-        <p className="text-red-500 text-3xl font-mono">
+      <h2 className="title-section">
           29 Ekim Hatıra Bileti
-        </p>
+        </h2>
 
 
-        <img
-          className={styles.image2}
-          src={props.image}
-          alt="Memory Image"
-        />
+        <div className={styles.imagecontainer}>
+          <img
+            className={styles.image2}
+            src="/img/29_memory.png"
+            alt="Memory Image"
+          />
+          <div className={styles.textoverlay}>{props.image}</div>
+        </div>
         {props.mnemonicIsShown ?
           <></>
           :

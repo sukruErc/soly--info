@@ -3007,6 +3007,97 @@ fieldset:disabled a.btn {
   box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.5);
 }
 
+.btn-primary4 {
+  color: #fff;
+  width: 270px;
+  height: 45px;
+  font-size: 18px;
+  border-radius: 40px;
+  background-color: #4c44f3;
+  border-color: #4c44f3;
+}
+
+.btn-primary4:hover {
+  color: #fff;
+  background-color: #0069d9;
+  border-color: #0062cc;
+}
+
+.btn-primary4:focus,
+.btn-primary4.focus {
+  color: #fff;
+  background-color: #0069d9;
+  border-color: #0062cc;
+  box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.5);
+}
+
+.btn-primary4.disabled,
+.btn-primary4:disabled {
+  color: #fff;
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-primary4:not(:disabled):not(.disabled):active,
+.btn-primary4:not(:disabled):not(.disabled).active,
+.show>.btn-primary4.dropdown-toggle {
+  color: #fff;
+  background-color: #0062cc;
+  border-color: #005cbf;
+}
+
+.btn-primary4:not(:disabled):not(.disabled):active:focus,
+.btn-primary4:not(:disabled):not(.disabled).active:focus,
+.show>.btn-primary4.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.5);
+}
+
+.btn-primary5 {
+  color: #fff;
+  width: 270px;
+  height: 45px;
+  font-size: 18px;
+  border-radius: 40px;
+  background-color: #fa4c4c;
+  border-color: #fa4c4c;
+}
+
+.btn-primary5:hover {
+  color: #fff;
+  background-color: #0069d9;
+  border-color: #0062cc;
+}
+
+.btn-primary5:focus,
+.btn-primary5.focus {
+  color: #fff;
+  background-color: #0069d9;
+  border-color: #0062cc;
+  box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.5);
+}
+
+.btn-primary5.disabled,
+.btn-primary5:disabled {
+  color: #fff;
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-primary5:not(:disabled):not(.disabled):active,
+.btn-primary5:not(:disabled):not(.disabled).active,
+.show>.btn-primary5.dropdown-toggle {
+  color: #fff;
+  background-color: #0062cc;
+  border-color: #005cbf;
+}
+
+.btn-primary5:not(:disabled):not(.disabled):active:focus,
+.btn-primary5:not(:disabled):not(.disabled).active:focus,
+.show>.btn-primary5.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.5);
+}
+
+
 .btn-secondary {
   color: #fff;
   background-color: #6c757d;

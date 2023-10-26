@@ -70,6 +70,7 @@ export default function Home() {
 
   useEffect(() => {
     if (getNFT) {
+      CheckDb(userId );
       setShowModal(false);
       Swal.fire("Tebrikler!", "Hatıra Biletinizi Aldınız!", "success");
     }
@@ -95,18 +96,18 @@ export default function Home() {
           setBcAdrress(response.data.bcAddress)
           setMnemonicIsShown(response.data.mnemonicIsShown)
           setHasMemory(true)
-          const res = await axios.get(
+          // const res = await axios.get(
 
-            // "http://195.85.201.62:8080/v1/memory-ticket/get-NFT-metaData",
-            "http://localhost:3500/v1/memory-ticket/get-NFT-metaData",
-            {
-              params: {
-                userId: storedUserId,
-                activityName: "ttestt3",
-              },
-            }
-          );
-          setIpfsImage(res.data)
+          //   // "http://195.85.201.62:8080/v1/memory-ticket/get-NFT-metaData",
+          //   "http://localhost:3500/v1/memory-ticket/get-NFT-metaData",
+          //   {
+          //     params: {
+          //       userId: storedUserId,
+          //       activityName: "ttestt3",
+          //     },
+          //   }
+          // );
+          setIpfsImage(response.data.displayName)
 
         }
       }

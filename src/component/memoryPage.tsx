@@ -60,21 +60,7 @@ const MemoryPage = (props: MemoryPageProps) => {
 
   const downloadImage = async () => {
     if (nameForNFT !== "") {
-      // const res = await axios.post(
-      //   "http://localhost:3500/v1/memory-ticket/generate-memory-image",
-      //   // "http://195.85.201.62:8080/v1/memory-ticket/generate-memory-image",
-      //   {
-      //     displayName: nameForNFT,
-      //   }
-      // );
-      // if (res) {
-      //   // debugger
-      //   const imageUrl = res.data;
-      //   const link = document.createElement("a");
-      //   link.href = imageUrl;
-      //   link.download = "29_ekim_hatira_bileti.png";
-      //   link.click();
-      // }
+
       const dataURL = canvas.toDataURL('image/png');
       const link = document.createElement('a');
       link.href = dataURL;
@@ -128,6 +114,7 @@ const MemoryPage = (props: MemoryPageProps) => {
           },
           body: JSON.stringify({
             image: dataURL,
+            displayName:nameForNFT,
             activityName: "ttestt3",
             userId: userId
           })
@@ -199,7 +186,7 @@ const MemoryPage = (props: MemoryPageProps) => {
           value={nameForNFT}
           onChange={(e) => setNameForNFT(e.target.value)}
           className={styles.styledinput}
-          placeholder="Bilet İçin İsminizi Girinizs"
+          placeholder="Bilet İçin İsminizi Giriniz"
         />
         <div className={styles.imagecontainer}>
           <img
