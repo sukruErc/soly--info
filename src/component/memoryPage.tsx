@@ -4,7 +4,6 @@ import { createCanvas, loadImage } from "canvas";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import WebFont from 'webfontloader'; 
 // import myImage from '../../public/img/29_memory.png';
 
 interface MemoryPageProps {
@@ -12,7 +11,7 @@ interface MemoryPageProps {
 
 }
 
-const addTextOverlayToImage = ( text: string): HTMLCanvasElement => {
+const addTextOverlayToImage = (text: string): HTMLCanvasElement => {
   const canvas = document.createElement('canvas');
   const image = new Image();
   image.src = 'img/29_memory.png';
@@ -22,21 +21,21 @@ const addTextOverlayToImage = ( text: string): HTMLCanvasElement => {
     canvas.width = image.width;
     canvas.height = image.height;
 
-    if(context){
+    if (context) {
 
       context.drawImage(image, 0, 0, canvas.width, canvas.height);
-      
+
       context.font = 'bold 160px Oswald';
-    
+
       context.fillStyle = 'white';
       context.textAlign = 'center';
-    context.textBaseline = 'middle';
+      context.textBaseline = 'middle';
 
-      
-      context.fillText(text, image.width/2, image.height/2 -550);
-      
+
+      context.fillText(text, image.width / 2, image.height / 2 - 550);
+
       // You can add more text or styling as required
-      
+
       // Cleanup
       context.restore();
     }
@@ -79,7 +78,7 @@ const MemoryPage = (props: MemoryPageProps) => {
       const dataURL = canvas.toDataURL('image/png');
       const link = document.createElement('a');
       link.href = dataURL;
-      link.download = 'image_with_text_overlay.png';
+      link.download = '29_ekim_hatira_bileti.png';
       link.click();
     } else {
       Swal.fire({
@@ -89,7 +88,7 @@ const MemoryPage = (props: MemoryPageProps) => {
       });
     }
   };
-    
+
 
   const handleSignUpPopUp = async () => {
     if (nameForNFT !== "") {
@@ -120,15 +119,15 @@ const MemoryPage = (props: MemoryPageProps) => {
           // backdrop: false,
           allowOutsideClick: false
         });
-
-        // fetch('http://localhost:3500/v1/memory-ticket/generate-memory-ticket', {
-        fetch('http://195.85.201.62:8080/v1/memory-ticket/generate-memory-ticket', {
+        const dataURL = canvas.toDataURL('image/png');
+        fetch('http://localhost:3500/v1/memory-ticket/generate-memory-ticket', {
+          // fetch('http://195.85.201.62:8080/v1/memory-ticket/generate-memory-ticket', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            displayName: nameForNFT,
+            image: dataURL,
             activityName: "ttestt3",
             userId: userId
           })

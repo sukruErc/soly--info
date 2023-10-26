@@ -80,8 +80,8 @@ export default function Home() {
       if (storedUserId && storedUserId !== "") {
         const response = await axios.get(
 
-          "http://195.85.201.62:8080/v1/memory-ticket/get-user-info-for-memory",
-          // "http://localhost:3500/v1/memory-ticket/get-user-info-for-memory",
+          // "http://195.85.201.62:8080/v1/memory-ticket/get-user-info-for-memory",
+          "http://localhost:3500/v1/memory-ticket/get-user-info-for-memory",
           {
             params: {
               userId: storedUserId,
@@ -97,8 +97,8 @@ export default function Home() {
           setHasMemory(true)
           const res = await axios.get(
 
-            "http://195.85.201.62:8080/v1/memory-ticket/get-NFT-metaData",
-            // "http://localhost:3500/v1/memory-ticket/get-NFT-metaData",
+            // "http://195.85.201.62:8080/v1/memory-ticket/get-NFT-metaData",
+            "http://localhost:3500/v1/memory-ticket/get-NFT-metaData",
             {
               params: {
                 userId: storedUserId,
@@ -132,9 +132,9 @@ export default function Home() {
           <link rel="stylesheet" href="vendor/animate/animate.css" />
           <link rel="stylesheet" href="css/theme.css" />
           <link
-  href="https://fonts.googleapis.com/css?family=Oswald:400,700&display=swap"
-  rel="stylesheet"
-/>
+            href="https://fonts.googleapis.com/css?family=Oswald:400,700&display=swap"
+            rel="stylesheet"
+          />
         </>
       </Head>
       <div className="back-to-top" />

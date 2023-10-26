@@ -12,6 +12,40 @@ interface MemoryShowProps {
 
 }
 
+const addTextOverlayToImage = (text: string, imageParam: string): HTMLCanvasElement => {
+  const canvas = document.createElement('canvas');
+  const image = new Image();
+  image.src = imageParam;
+  const context = canvas.getContext('2d');
+
+  image.onload = () => {
+    canvas.width = image.width;
+    canvas.height = image.height;
+
+    if (context) {
+
+      context.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+      context.font = 'bold 160px Oswald';
+
+      context.fillStyle = 'white';
+      context.textAlign = 'center';
+      context.textBaseline = 'middle';
+
+
+      context.fillText(text, image.width / 2, image.height / 2 - 550);
+
+      // You can add more text or styling as required
+
+      // Cleanup
+      context.restore();
+    }
+  };
+
+  return canvas;
+};
+
+
 const MemoryShow = (props: MemoryShowProps) => {
   const router = useRouter();
 
@@ -19,6 +53,7 @@ const MemoryShow = (props: MemoryShowProps) => {
   const [userName, setUserName] = useState<string | null>(null);
 
   const [buttonText, setButtonText] = useState("İfadenizi Kopyalayın")
+  const canvas = addTextOverlayToImage("", props.image);
 
   useEffect(() => {
     const storedUserId = localStorage.getItem("SOLY_USER_ID");
@@ -93,20 +128,25 @@ const MemoryShow = (props: MemoryShowProps) => {
   }
 
   const downloadImage = async () => {
-    const res = await axios.post(
-      "http://localhost:3500/v1/memory-ticket/generate-memory-image",
-      // "http://195.85.201.62:8080/v1/memory-ticket/generate-memory-image",
-      {
-        displayName: "",
-      }
-    );
-    if (res) {
-      const imageUrl = res.data;
-      const link = document.createElement("a");
-      link.href = imageUrl;
-      link.download = "29_ekim_hatira_bileti.png";
-      link.click();
-    }
+    // const res = await axios.post(
+    //   "http://localhost:3500/v1/memory-ticket/generate-memory-image",
+    //   // "http://195.85.201.62:8080/v1/memory-ticket/generate-memory-image",
+    //   {
+    //     displayName: "",
+    //   }
+    // );
+    // if (res) {
+    //   const imageUrl = res.data;
+    //   const link = document.createElement("a");
+    //   link.href = imageUrl;
+    //   link.download = "29_ekim_hatira_bileti.png";
+    //   link.click();
+    // }
+    const dataURL = canvas.toDataURL('image/png');
+    const link = document.createElement('a');
+    link.href = dataURL;
+    link.download = '29_ekim_hatira_bileti.png';
+    link.click();
 
   };
 
