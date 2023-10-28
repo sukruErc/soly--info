@@ -81,61 +81,27 @@ const MemoryPage = (props: MemoryPageProps) => {
 
       if (userId !== "") {
 
-        let timerInterval: any;
-        Swal.fire({
-          title: 'Size Özel Hatıra Bileti üretiliyor',
-          html: 'Lütfen Bekleyiniz',
-          timerProgressBar: true,
-          didOpen: () => {
-            Swal.showLoading();
-            const b = Swal.getHtmlContainer()?.querySelector('b');
-            if (b) {
-
-              timerInterval = setInterval(() => {
-                const timerLeft = Swal.getTimerLeft();
-                if (typeof timerLeft === 'number') {
-                  b.textContent = timerLeft.toString();
-                }
-              }, 1000);
-            }
-          },
-          willClose: () => {
-            clearInterval(timerInterval);
-          },
-          // backdrop: false,
-          allowOutsideClick: false
-        });
-        const dataURL = canvas.toDataURL('image/png');
-        fetch('http://localhost:3500/v1/memory-ticket/generate-memory-ticket', {
-          // fetch('http://195.85.201.62:8080/v1/memory-ticket/generate-memory-ticket', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
+        const dataURL = canvas.toDataURL("image/png");
+        // const res: any = await axios.post(
+        //   "http://localhost:3500/v1/memory-ticket/generate-memory-ticket",
+        //   {
+            const response: any = await axios.post(
+              "http://195.85.201.62:8080/v1/memory-ticket/generate-memory-ticket",
+              {
             image: dataURL,
-            displayName:nameForNFT,
-            activityName: "ttestt3",
-            userId: userId
-          })
-        })
-          .then((response) => {
+            displayName: nameForNFT,
+            userId: userId,
+          }
+        );
+        Swal.fire({
+          icon: "success",
+          title: "Tebrikler!",
+          text: "Hatıra Biletinizi Oluşturdunuz, Cüzdanınıza Gönderdiğimizde Sizi Bilgilendireceğiz!",
+          confirmButtonText: "Anasayfaya Gidin",
+        }).then((result) => {
+          props.setGetNFT(true)
+        });
 
-            Swal.close();
-
-            return response.json();
-          })
-          .then((data) => {
-
-            if (data) {
-
-              props.setGetNFT(true)
-            }
-          })
-          .catch((error) => {
-
-            console.error('Error:', error);
-          });
       }
       else {
         Swal.fire({

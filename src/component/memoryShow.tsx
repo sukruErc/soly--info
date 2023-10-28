@@ -148,8 +148,8 @@ const MemoryShow = (props: MemoryShowProps) => {
   const getMne = async (): Promise<any> => {
     try {
       const response = await axios.get(
-        "http://localhost:3500/v1/users/get-mne",
-        // "http://195.85.201.62:8080/v1/users/get-mne",
+        // "http://localhost:3500/v1/users/get-mne",
+        "http://195.85.201.62:8080/v1/users/get-mne",
         {
           params: {
             userId: localStorage.getItem("SOLY_USER_ID"),
