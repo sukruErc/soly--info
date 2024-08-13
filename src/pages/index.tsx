@@ -2,109 +2,26 @@ import Head from "next/head";
 import Script from "next/script";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-} from "@mui/material";
 import MemoryPage from "@/component/memoryPage";
 import axios from "axios";
-import { useRouter } from "next/router";
 import MemoryShow from "@/component/memoryShow";
 
 export default function Home() {
-  const [userId, setUserId] = useState<string>("");
-  const [ipfsImage, setIpfsImage] = useState<string>("");
-  const [userName, setUserName] = useState<string | null>(null);
-  const [mounted, setMounted] = useState(false);
-  const [getNFT, setGetNFT] = useState(false);
-  const [showModal, setShowModal] = useState(false);
+  
   const [hasMemory, setHasMemory] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [bcAddress, setBcAdrress] = useState("")
-  const [mnemonicIsShown, setMnemonicIsShown] = useState(false)
+  const [mounted, setMounted] = useState(false);
 
-  const router = useRouter();
-  const { hatiraBileti } = router.query;
 
   useEffect(() => {
     if (window.screen.width < 850) {
       setIsMobile(true)
     }
-    if (hatiraBileti) {
-      setShowModal(true);
-    }
-    const storedUserId = localStorage.getItem("SOLY_USER_ID");
-    setUserName(localStorage.getItem("SOLY_USER_NAME"));
-    setUserId(storedUserId ? storedUserId : "");
     setMounted(true);
-    const isSignupAlertShown = localStorage.getItem("SOLY_ENTERED");
-    CheckDb(storedUserId as string);
-
-    if (isSignupAlertShown === "true") {
-      const Toast = Swal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener("mouseenter", Swal.stopTimer);
-          toast.addEventListener("mouseleave", Swal.resumeTimer);
-          toast.style.marginTop = "100px";
-        },
-      });
-
-      Toast.fire({
-        icon: "success",
-        title: `Hoşgeldin ${localStorage.getItem(
-          "SOLY_USER_NAME"
-        )}! Üye olduğun için teşekkürler. Yakın zamanda güncellemelerimizi alacaksın`,
-      });
-      localStorage.setItem("SOLY_ENTERED", "false");
-    }
   }, []);
 
-  useEffect(() => {
-    if (getNFT) {
-      CheckDb(userId );
-      setShowModal(false);
-      // Swal.fire("Tebrikler!", "Hatıra Biletinizi Aldınız!", "success");
-    }
-  }, [getNFT]);
 
-  const CheckDb = async (storedUserId: string) => {
-    try {
-      if (storedUserId && storedUserId !== "") {
-        const response = await axios.get(
 
-          "http://195.85.201.62:8080/v1/memory-ticket/get-user-info-for-memory",
-          // "http://localhost:3500/v1/memory-ticket/get-user-info-for-memory",
-          {
-            params: {
-              userId: storedUserId,
-              activityName: "29-ekim",
-            },
-          }
-        );
-        if (response.data === undefined || response.data.isExist === false) {
-        }
-        else if (response.data) {
-          setBcAdrress(response.data.bcAddress)
-          setMnemonicIsShown(response.data.mnemonicIsShown)
-          setHasMemory(true)
-
-          setIpfsImage(response.data.displayName)
-
-        }
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   return (
     <>
@@ -147,56 +64,6 @@ export default function Home() {
               <a href="#" className="navbar-brand">
                 <img alt="logo" width={"40%"} src="img/soly_logo_trans.png" />
               </a>
-              {
-                isMobile ?
-                  <></>
-                  :
-
-                  hasMemory ?
-                    <div className="gradient-div">
-                      <button
-                        className="gradient-button" type="button"
-                        onClick={() => setShowModal(true)}
-                      >
-                        <span className="button-content2">
-                          29 Ekim Hatıra Biletiniz!
-
-                        </span>
-                      </button>
-                    </div>
-                    :
-                    <div className="gradient-div">
-                      <button
-                        className="gradient-button" type="button"
-                        onClick={() => setShowModal(true)}
-                      >
-                        <span className="button-content2">
-
-                          29 Ekim Hatıra Biletinizi Alın!
-                          {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 010 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 010-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375z" />
-                          </svg> */}
-                        </span>
-                      </button>
-                    </div>
-
-              }
-              {userId === "" ? (
-                <div
-                  style={{
-                    height: "35px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <a className="btn btn-primary3" href="signin">
-                    Üye Ol
-                  </a>
-                </div>
-              ) : (
-                <h5 className="text-secondary">{userName}</h5>
-              )}
             </div>
           </div>
         </nav>
@@ -211,35 +78,6 @@ export default function Home() {
             marginLeft: "10px",
           }}
         >
-          {
-            !isMobile ?
-              <></>
-              :
-
-              hasMemory ?
-                <div className="gradient-div">
-                  <button
-                    className="gradient-button" type="button"
-                    onClick={() => setShowModal(true)}
-                  >
-                    29 Ekim Hatıra Biletiniz!
-                    {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 010 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 010-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375z" />
-                    </svg> */}
-
-                  </button>
-                </div>
-                :
-                <div className="gradient-div">
-                  <button
-                    className="gradient-button" type="button"
-                    onClick={() => setShowModal(true)}
-                  >
-                    29 Ekim Hatıra Biletinizi Alın!
-                  </button>
-                </div>
-
-          }
 
         </div>
         <div className="container">
@@ -546,42 +384,6 @@ export default function Home() {
           </div>
         </div>
       </footer>
-      {showModal ? (
-        <>
-          <div className=" flex justify-center items-center bg-gray-100 bg-opacity-50 fixed inset-0 z-50 outline-none focus:outline-none">
-            <div className="relative w-10/12 h-10/12  ">
-              <div className="border-0 rounded-lg shadow-lg relative flex flex-col  bg-white outline-none focus:outline-none">
-                <div className="flex items-start justify-end border-b border-solid border-gray-300 rounded-t p-1 ">
-                  {/* <h3 className="text-3xl font=semibold">General Info</h3> */}
-                  <button
-                    className="bg-transparent border-0 text-black float-right"
-                    onClick={() => setShowModal(false)}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke-width="1.5"
-                      stroke="currentColor"
-                      className="w-6 h-6"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
-                  </button>
-                </div>
-                {hasMemory ?
-                  <MemoryShow image={ipfsImage} bcAddress={bcAddress} mnemonicIsShown={mnemonicIsShown} /> :
-                  <MemoryPage setGetNFT={setGetNFT} />
-                }
-              </div>
-            </div>
-          </div>
-        </>
-      ) : null}
       {/* <script async src="js/jquery-3.5.1.min.js"></script>
       <script async src="js/bootstrap.bundle.min.js"></script>
       <script async src="vendor/wow/wow.min.js"></script>
