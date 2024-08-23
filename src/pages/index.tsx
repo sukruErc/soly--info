@@ -12,38 +12,53 @@ export default function Home() {
   const [isMobile, setIsMobile] = useState(false);
   const [mounted, setMounted] = useState(false);
 
-
   useEffect(() => {
     if (window.screen.width < 850) {
-      setIsMobile(true)
+      setIsMobile(true);
     }
     setMounted(true);
   }, []);
 
-
-
-
   return (
     <>
       <Head>
-        <>
-          <meta charSet="UTF-8" />
-          <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1.0"
-          />
-          <meta httpEquiv="X-UA-Compatible" content="ie=edge" />
-          <meta name="copyright" content="MACode ID, https://macodeid.com/" />
-          <title>SolyTicket</title>
-          <link rel="stylesheet" href="css/maicons.css" />
-          <link rel="stylesheet" href="css/bootstrap.css" />
-          <link rel="stylesheet" href="vendor/animate/animate.css" />
-          <link rel="stylesheet" href="css/theme.css" />
-          <link
-            href="https://fonts.googleapis.com/css?family=Oswald:400,700&display=swap"
-            rel="stylesheet"
-          />
-        </>
+        <meta charSet="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta httpEquiv="X-UA-Compatible" content="ie=edge" />
+
+        {/* Primary Meta Tags */}
+        <title>SolyTicket - Blockchain-based Event Ticketing Platform</title>
+        <meta name="title" content="SolyTicket - Blockchain-based Event Ticketing Platform" />
+        <meta name="description" content="SolyTicket is a blockchain-based event ticketing platform offering secure and transparent ticket sales with features like Soly Market, Soly Collection, and Soly Ecosystem." />
+        <meta name="keywords" content="Blockchain, Event Ticketing, NFT Tickets, SolyTicket, Secure Ticket Sales, Soly Market, Soly Collection, Soly Ecosystem" />
+        <meta name="author" content="SolyTicket" />
+
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://www.solyticket.com/" />
+        <meta property="og:title" content="SolyTicket - Blockchain-based Event Ticketing Platform" />
+        <meta property="og:description" content="SolyTicket is a blockchain-based event ticketing platform offering secure and transparent ticket sales with features like Soly Market, Soly Collection, and Soly Ecosystem." />
+        <meta property="og:image" content="/img/soly-banner.png" />
+
+        {/* Twitter */}
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content="https://www.solyticket.com/" />
+        <meta property="twitter:title" content="SolyTicket - Blockchain-based Event Ticketing Platform" />
+        <meta property="twitter:description" content="SolyTicket is a blockchain-based event ticketing platform offering secure and transparent ticket sales with features like Soly Market, Soly Collection, and Soly Ecosystem." />
+        <meta property="twitter:image" content="/img/soly-banner.png" />
+
+        {/* Favicon */}
+        <link rel="icon" href="/favicon.ico" />
+
+        {/* Fonts and Stylesheets */}
+        <link rel="stylesheet" href="css/maicons.css" />
+        <link rel="stylesheet" href="css/bootstrap.css" />
+        <link rel="stylesheet" href="vendor/animate/animate.css" />
+        <link rel="stylesheet" href="css/theme.css" />
+        <link
+          href="https://fonts.googleapis.com/css?family=Oswald:400,700&display=swap"
+          rel="stylesheet"
+        />
       </Head>
       <div className="back-to-top" />
       <header>
@@ -78,7 +93,6 @@ export default function Home() {
             marginLeft: "10px",
           }}
         >
-
         </div>
         <div className="container">
           <div className="page-banner home-banner">
@@ -87,10 +101,9 @@ export default function Home() {
                 className={`col-md-6 py-5 ${mounted ? "wow fadeInLeft animated" : ""
                   }`}
               >
-                <h1 className="mb-4">NFT, Bilet ile Buluşuyor!</h1>
+                <h1 className="mb-4">Her Etkinlikte Güvenle, SolyTicket Seninle!</h1>
                 <p className="text-lg text-grey mb-5">
-                  SolyTicket; her kategoriden etkinliği bünyesinde barındıracak
-                  olan NFT etkinlik bilet platformudur.
+                  SolyTicket, Blockchain tabanlı etkinlik biletleme platformudur. Ocak 2025’te sizinle!
                 </p>
               </div>
               <div
@@ -129,7 +142,6 @@ export default function Home() {
           <div
             className={`text-center ${mounted ? "wow fadeInUp animated" : ""}`}
           >
-            {/* <div className="subhead">Our services</div> */}
             <h2 className="title-section">Kullanıcılara Ne Sunuyoruz?</h2>
             <div className="divider mx-auto" />
           </div>
@@ -143,11 +155,12 @@ export default function Home() {
                   <img src="img/services/service-1.svg" alt="" />
                 </div>
                 <div className="body">
-                  <h5 className="text-secondary">İkincil Bilet Pazarı</h5>
+                  <h5 className="text-secondary">Soly Market</h5>
                   <p>
-                    İkincil bilet pazarıyla biletini aldığınız etkinliğe
-                    katılamazsanız, ilgili biletin satışını
-                    gerçekleştirebilirsiniz. Tabii ki makul fiyattan!
+                    Soly Market, karaborsayı engelleyen Blockchain tabanlı güvenli bir
+                    ikincil bilet pazar yeridir. Kullanıcı, katılamayacağı bir etkinliğin
+                    biletini organizatörün sınırlarını belirlediği bir fiyat aralığından
+                    satışa çıkarabilir.
                   </p>
                 </div>
               </div>
@@ -161,11 +174,9 @@ export default function Home() {
                   <img src="img/services/service-2.svg" alt="" />
                 </div>
                 <div className="body">
-                  <h5 className="text-secondary">Dijital Koleksiyon</h5>
+                  <h5 className="text-secondary">Soly Koleksiyon</h5>
                   <p>
-                    NFT etkinlik biletlerinizle dijital koleksiyon yapabilir,
-                    koleksiyonlarınızı tamamlamanız halinde ücretsiz biletinizi
-                    kazanabilirsiniz.
+                    Kullanıcılar, Blockchain tabanlı etkinlik biletleriyle Soly Koleksiyon’da kendi koleksiyonlarını tamamlayabilirler. Koleksiyonlarını tamamlayanlar, ücretsiz bilet veya indirimli bilet gibi ödüller kazanabilirler.
                   </p>
                 </div>
               </div>
@@ -179,19 +190,40 @@ export default function Home() {
                   <img src="img/services/service-3.svg" alt="" />
                 </div>
                 <div className="body">
-                  <h5 className="text-secondary">Kripto Paranız Yok Mu?</h5>
+                  <h5 className="text-secondary">Soly Ekosistem</h5>
                   <p>
-                    Hiç Sorun Değil. SolyTicket platformunda NFT etkinlik
-                    biletinizi kredi/banka kartınızla satın alabilirsiniz.
+                    Soly Ekosistem’deki anlaşmalı restoranlar, konaklama yerleri ve ulaşım hizmetleri, biletli kullanıcılara özel indirimler sunar. Amacımız, biletli kullanıcıları A’dan Z’ye her aşamada destekleyerek, eksiksiz bir deneyim yaşatmak.
                   </p>
                 </div>
               </div>
             </div>
           </div>
         </div>{" "}
-        {/* .container */}
       </div>{" "}
-      {/* .page-section */}
+      
+      {/* New Payment Information Section */}
+      <div className="page-section bg-light">
+        <div className="container">
+          <div className={`text-center ${mounted ? "wow fadeInUp animated" : ""}`}>
+            <h2 className="title-section">Ödeme Bilgileri</h2>
+            <div className="divider mx-auto" />
+            <p>
+              Kripto Paranız Yok Mu? Sorun değil! SolyTicket’ta ödeme kredi/banka kartı ile yapılmaktadır. 
+              <br />
+              Not: 31456 sayılı TCMB yönetmeliğine istinaden kripto paraların ödemelerde kullanılması yasaktır.{" "}
+              <a
+                href="https://www.resmigazete.gov.tr/eskiler/2021/04/20210416-4.htm"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Detaylar için tıklayın.
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+      {/* End of Payment Information Section */}
+      
       <div className="page-section" id="about">
         <div className="container">
           <div className="row align-items-center">
@@ -201,17 +233,14 @@ export default function Home() {
             >
               <h2 className="title-section">Soly Dijital Koleksiyon</h2>
               <div className="divider" />
-
               <p>
-                Her SolyTicket üyesi, Soly Dijital Koleksiyon defterine sahip olacak.
-                Bu defterde her sayfada farklı görevler bulunacak ve bu görevleri tamamlayan
-                Üyeler ücretsiz bilet kazanacaklar. Soly Dijital Koleksiyon&apos;un iki temel amacı var:
+                Her SolyTicket kullanıcısı, kendine ait bir Soly Koleksiyon sayfasına sahip olur. Belirli bir süre içinde etkinliklere katılarak, ücretsiz bilet veya indirimli bilet kazanma şansı elde edebilirler. Bu sayede;
               </p>
               <p>
-                1- Organizatörlerin daha fazla müşteri çekmesini sağlamak,
+                1- Organizatörler, daha geniş bir müşteri kitlesine ulaşabilir.
               </p>
               <p>
-                2- Etkinlik katılımcılarının sadakatlerini ödüllendirmek için ücretsiz bilet sunmak.
+                2- Kullanıcılar, sadakatleri karşılığında ödüllerle buluşur.
               </p>
             </div>
             <div
@@ -224,16 +253,13 @@ export default function Home() {
             </div>
           </div>
         </div>{" "}
-        {/* .container */}
       </div>{" "}
-      {/* .page-section */}
       <div className="page-section bg-light">
         <div className="container">
           <div
             className={`text-center ${mounted ? "wow fadeInUp animated" : ""}`}
           >
-            {/* <div className="subhead">Our services</div> */}
-            <h2 className="title-section">Organizasyonlara Ne Sunuyoruz?</h2>
+            <h2 className="title-section">Organizatörlere Ne Sunuyoruz?</h2>
             <div className="divider mx-auto" />
           </div>
           <div className="row">
@@ -246,11 +272,10 @@ export default function Home() {
                   <img src="img/services/service-4.svg" alt="" />
                 </div>
                 <div className="body">
-                  <h5 className="text-secondary">Karaborsasız Bir Sektör</h5>
+                  <h5 className="text-secondary">Komisyonsuz Satış</h5>
                   <p>
-                    NFT teknolojisi sayesinde ikincil bilet pazarının varlığı
-                    söz konusu olduğu için karaborsa mümkün olmayacak, tamamen
-                    kontrol altında ve takip edilebilir olacaktır.
+                    Yalnızca SolyTicket üzerinden satışı gerçekleştirilen etkinliklerde komisyonsuz bir platform sağlanırken, diğer bilet platformlarının yanında SolyTicket’ta da satışı gerçekleştirilen etkinliklerde piyasanın en uygun komisyon oranı alınmaktadır.
+                    Detaylar için: info@solyticket.com
                   </p>
                 </div>
               </div>
@@ -264,10 +289,10 @@ export default function Home() {
                   <img src="img/services/service-5.svg" alt="" />
                 </div>
                 <div className="body">
-                  <h5 className="text-secondary">
-                    Komisyonsuz Bilet Satışları
-                  </h5>
-                  <p>SolyTicket, 0 komisyon ile çalışacaktır.</p>
+                  <h5 className="text-secondary">Ek Gelir</h5>
+                  <p>
+                    Organizatör, Soly Market’te satılan her bir İkinci el biletten %10’a varan ek gelir elde edebilir.
+                  </p>
                 </div>
               </div>
             </div>
@@ -280,21 +305,16 @@ export default function Home() {
                   <img src="img/services/service-6.svg" alt="" />
                 </div>
                 <div className="body">
-                  <h5 className="text-secondary">
-                    Gelir Transferlerindeki Yüksek Hız
-                  </h5>
+                  <h5 className="text-secondary">Karaborsa</h5>
                   <p>
-                    Dijital Türk Lirası kullanımıyla birlikte bilet gelirleri,
-                    satışı takiben etkinlik sahibine iletilebilecektir.
+                    Soly Market, ikincil bilet satışında aktif rol oynarken karaborsayı tamamen ortadan kaldırır ve süreci kontrol altına alır. Blockchain teknolojisi sayesinde, tüm alış ve satışlar %100 şeffaf ve güvenilir bir ortamda kayıt altına alınır.
                   </p>
                 </div>
               </div>
             </div>
           </div>
         </div>{" "}
-        {/* .container */}
       </div>{" "}
-      {/* .page-section */}
       <div className="page-section banner-seo-check" id="contact_us">
         <div
           className="wrap bg-image"
@@ -326,19 +346,16 @@ export default function Home() {
                       borderRadius: "6px",
                       width: "100%",
                       borderColor: "#fff",
-                      // borderColor: "transparent",
                       color: "#495057",
                       border: "1px solid #ced4da",
                       boxShadow: "none !important",
                       transition:
                         "border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out",
                     }}
-                    // className="form-control"
                     name="name"
                     required
                     placeholder="Mesajınızı Yazınız"
                   />
-                  {/* <input type="hidden" name="_next" value={"http://localhost:5000/"} /> */}
                   <button type="submit" className="btn btn-success">
                     Gönder
                   </button>
@@ -384,11 +401,6 @@ export default function Home() {
           </div>
         </div>
       </footer>
-      {/* <script async src="js/jquery-3.5.1.min.js"></script>
-      <script async src="js/bootstrap.bundle.min.js"></script>
-      <script async src="vendor/wow/wow.min.js"></script>
-      <script async src="js/theme.js"></script>
-      <script async src="js/google-maps.js"></script> */}
       <Script src="/js/jquery-3.5.1.min.js" strategy="beforeInteractive" />
       <Script src="/js/bootstrap.bundle.min.js" strategy="beforeInteractive" />
       <Script src="/vendor/wow/wow.min.js" strategy="beforeInteractive" />
